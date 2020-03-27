@@ -19,4 +19,9 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, Paasivu.class);
         startActivity(intent);
     }
+
+    public void goToLuoArvostelu(View view){
+        Intent intentLuoArvostelu = new Intent(this, luoArvostelu.class);
+        startActivity(intentLuoArvostelu);
+    }
 }
