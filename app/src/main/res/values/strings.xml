@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">Nalaka</string>
+
+    //luoArvostelu sivun spinneri arrayt
+
+    <string-array name="kaupungit">
+        <item>Oulu</item>
+        <item>Rovaniemi</item>
+    </string-array>
+
 </resources>
