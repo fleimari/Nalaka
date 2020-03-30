@@ -23,14 +23,6 @@
         android:text="paasivu"
         android:id="@+id/paasivuButton"
         app:layout_constraintTop_toBottomOf="@+id/textView"
-        android:onClick="goToPaasivu" />
-
-    <Button
-        android:id="@+id/luoArvostelu"
-        android:onClick="goToLuoArvostelu"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="luo arvostelu"
-        app:layout_constraintTop_toBottomOf="@+id/paasivuButton" />
+        android:onClick="goToPaasivu"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
