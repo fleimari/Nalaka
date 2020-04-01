@@ -6,6 +6,19 @@
     <string-array name="kaupungit">
         <item>Oulu</item>
         <item>Rovaniemi</item>
+        <item>Kemi</item>
+    </string-array>
+
+    <string-array name="ravintolat">
+        <item>Göreme</item>
+        <item>Hesburger</item>
+        <item>PizzaBuffa</item>
+    </string-array>
+
+    <string-array name="tags">
+        <item>Pizza</item>
+        <item>Kebab</item>
+        <item>Hampurilainen</item>
     </string-array>
 
 </resources>

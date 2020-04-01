@@ -18,6 +18,7 @@ public class luoArvostelu extends AppCompatActivity {
     Button btnKamera;
     ImageView ivAnnos;
     Spinner spinnerKaupunki, spinnerRavintola, spinnerTags;
+    ArrayAdapter<CharSequence> adapterKaupungit, adapterRavintolat, adapterTags;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,9 +31,17 @@ public class luoArvostelu extends AppCompatActivity {
          spinnerRavintola = (Spinner) findViewById(R.id.spinnerRavintola);
          spinnerTags = (Spinner) findViewById(R.id.spinnerTags);
 
-        //ArrayAdapter<CharSequence> adapterKaupungit = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_item, R.array.kaupungit);
-        //adapterKaupungit.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        //spinnerKaupunki.setAdapter(adapterKaupungit);
+        adapterKaupungit = ArrayAdapter.createFromResource(this, R.array.kaupungit, android.R.layout.simple_spinner_item);
+        adapterKaupungit.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerKaupunki.setAdapter(adapterKaupungit);
+
+        adapterRavintolat = ArrayAdapter.createFromResource(this,  R.array.ravintolat, android.R.layout.simple_spinner_item);
+        adapterRavintolat.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerRavintola.setAdapter(adapterRavintolat);
+
+        adapterTags = ArrayAdapter.createFromResource(this,  R.array.tags, android.R.layout.simple_spinner_item);
+        adapterTags.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerTags.setAdapter(adapterTags);
 
 
     }
@@ -52,5 +61,11 @@ public class luoArvostelu extends AppCompatActivity {
     public void otaVideo (View view){
         Intent intentVideo = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
         startActivityForResult(intentVideo, 0);
+    }
+
+    public void valitseGalleria (View view){
+        Intent intentGalleria = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        intentGalleria.setType("image/* video/*");
+        startActivityForResult(intentGalleria, 0);
     }
 }

@@ -7,7 +7,7 @@
     tools:context=".luoArvostelu">
 
     <Button
-        android:id="@+id/buttonLisaaVideo2"
+        android:id="@+id/buttonGalleria"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="48dp"
@@ -15,7 +15,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
-        android:onClick="otaVideo"
+        android:onClick="valitseGalleria"
         android:text="Valitse tiedosto galleriasta"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/annosKuva"
@@ -72,6 +72,7 @@
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginBottom="32dp"
@@ -82,7 +83,8 @@
         android:inputType="textMultiLine"
         app:layout_constraintBottom_toTopOf="@+id/ratingBar"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerTags" />
 
     <RatingBar
         android:id="@+id/ratingBar"
@@ -90,10 +92,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="16dp"
+        android:stepSize="1"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:stepSize="1"/>
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/button2"
@@ -103,7 +105,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="16dp"
         android:text="Julkaise arvostelu"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -126,12 +128,11 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="48dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="32dp"
+        app:layout_constraintEnd_toStartOf="@+id/spinnerRavintola"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonLisaaVideo2" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonGalleria" />
 
     <Spinner
         android:id="@+id/spinnerRavintola"
@@ -139,24 +140,24 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerKaupunki" />
+        app:layout_constraintEnd_toStartOf="@+id/spinnerTags"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/spinnerKaupunki"
+        app:layout_constraintTop_toBottomOf="@+id/buttonGalleria" />
 
     <Spinner
         android:id="@+id/spinnerTags"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerRavintola" />
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/spinnerRavintola"
+        app:layout_constraintTop_toBottomOf="@+id/buttonGalleria" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
