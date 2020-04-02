@@ -1,32 +1,26 @@
 package com.example.nalaka;
 
-import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class CustomAdapter extends BaseAdapter {
+public class CustomAdapaterTags extends BaseAdapter {
 
     private final Context context;
     private final ArrayList<String> data;
-    private final ArrayList<String> otsikkoData;
-    private final Integer[] imageIDarray;
     private static LayoutInflater inflater = null;
 
-    public CustomAdapter(Context context, ArrayList<String> data, ArrayList<String> otsikkoData, Integer[] imageIDarray){
-
+    public CustomAdapaterTags(Context context, ArrayList<String> data) {
         this.context = context;
         this.data = data;
-        this.otsikkoData = otsikkoData;
-        this.imageIDarray = imageIDarray;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
     }
 
     @Override
@@ -49,12 +43,8 @@ public class CustomAdapter extends BaseAdapter {
         View vi = convertView;
         if(vi == null)
             vi = inflater.inflate(R.layout.list_row, null);
-        TextView text = (TextView) vi.findViewById(R.id.arvosteluteksti);
-        TextView title = vi.findViewById(R.id.title);
-        ImageView image = vi.findViewById(R.id.listIMG);
-        text.setText(data.get(position));
-        title.setText(otsikkoData.get(position));
-        image.setImageResource(imageIDarray[position]);
+        TextView myTextView = (TextView) vi.findViewById(R.id.textViewTag);
+        myTextView.setText(data.get(position));
         return vi;
     }
 }
