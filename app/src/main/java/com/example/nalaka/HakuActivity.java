@@ -22,11 +22,13 @@ public class HakuActivity extends AppCompatActivity implements View.OnClickListe
     String[] kaupungit = new String[]{"Helsinki", "Turku", "Tampere", "Oulu", "Vaasa", "Pori", "Rovaniemi", "Espoo", "Vantaa", "Lappeenranta", "Tornio", "Kemi", "Oulunsalo"};
     String[] ruokalajit = new String[]{"Pizza","Kebab","Porkkanalaatikko","Hapurilainen","Hummus","Keitto","Pihvi","Kalaa"};
     ArrayList<String> haettavatTagi = new ArrayList<>();
+    ArrayList<String> haettavatTagit2 = new ArrayList<>();
 
     TextView textviewTagit;
 
     ListView myList;
     ListView myTagList;
+
 
 
     @Override
@@ -54,14 +56,13 @@ public class HakuActivity extends AppCompatActivity implements View.OnClickListe
         myList.setAdapter(adapter);
         myList.setOnItemClickListener(this);
 
-/*
-        ArrayList<String> haettavatTagit2 = new ArrayList<>();
-        String [] testiTagssia = {"testi1", "testi2"};
-        Collections.addAll(haettavatTagit2, testiTagssia);
 
-        CustomAdapaterTags tagAdapter = new CustomAdapaterTags(this, haettavatTagit2);
-        myTagList = findViewById(R.id.customListTagit);
-        myTagList.setAdapter(tagAdapter);*/
+
+        //String [] testiTagssia = {"testi1", "testi2", "testi3", "testi4"};
+        //Collections.addAll(haettavatTagit2, testiTagssia);
+        //Log.d("Testi", "onCreate: " + haettavatTagit2.get(0) + " " + haettavatTagit2.get(1));
+
+
 
     }
 
@@ -79,6 +80,13 @@ public class HakuActivity extends AppCompatActivity implements View.OnClickListe
 
             }
             atv.setText("");
+
+            haettavatTagit2.add("testi1");
+
+            //Log.d("Testi", "onCreate: " + haettavatTagit2.get(0) + " " + haettavatTagit2.get(1));
+            CustomAdapaterTags tagAdapter = new CustomAdapaterTags(this, haettavatTagit2);
+            myTagList = findViewById(R.id.customListTagit);
+            myTagList.setAdapter(tagAdapter);
         }
         if (v.getId() == R.id.BtnHaku)
         {

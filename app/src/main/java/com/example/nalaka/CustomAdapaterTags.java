@@ -41,10 +41,12 @@ public class CustomAdapaterTags extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View vi = convertView;
-        if(vi == null)
+        if(vi == null) {
             vi = inflater.inflate(R.layout.list_row, null);
-        TextView myTextView = (TextView) vi.findViewById(R.id.textViewTag);
-        myTextView.setText(data.get(position));
+        }
+
+        TextView myTextView = (TextView) vi.findViewById(R.id.textViewTag1);
+        myTextView.setText("testi");
         return vi;
     }
 }

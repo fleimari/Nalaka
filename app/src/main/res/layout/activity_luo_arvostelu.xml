@@ -19,7 +19,7 @@
         android:onClick="valitseGalleria"
         android:text="Valitse tiedosto galleriasta"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/annosKuva"
+        app:layout_constraintStart_toEndOf="@id/annosKuva"
         app:layout_constraintTop_toBottomOf="@+id/buttonLisaaVideo" />
 
     <EditText
