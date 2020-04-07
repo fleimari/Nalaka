@@ -5,13 +5,46 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 
-public class Paasivu extends AppCompatActivity {
+import com.google.android.youtube.player.YouTubeBaseActivity;
+import com.google.android.youtube.player.YouTubeInitializationResult;
+import com.google.android.youtube.player.YouTubePlayer;
+import com.google.android.youtube.player.YouTubePlayerView;
+
+public class Paasivu extends YouTubeBaseActivity {
+
+    YouTubePlayerView tubePlayerView;
+    Button button;
+    YouTubePlayer.OnInitializedListener initializedListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_paasivu);
+
+        button = (Button) findViewById(R.id.playButton);
+        tubePlayerView = (YouTubePlayerView) findViewById(R.id.youtubePlay);
+
+        initializedListener = new YouTubePlayer.OnInitializedListener() {
+            @Override
+            public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
+                youTubePlayer.loadVideo("d1CuRK-DEXU");
+            }
+
+            @Override
+            public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
+
+            }
+        };
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tubePlayerView.initialize(TubeConfig.getApiKey(), initializedListener);
+            }
+        });
+
     }
 
     public void goToLuoArvostelu(View view){
