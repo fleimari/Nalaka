@@ -29,7 +29,8 @@ public class Paasivu extends YouTubeBaseActivity {
         initializedListener = new YouTubePlayer.OnInitializedListener() {
             @Override
             public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
-                youTubePlayer.loadVideo("d1CuRK-DEXU");
+                //youTubePlayer.loadVideo("7RkcVwLR6_Q");
+                youTubePlayer.loadVideo("omGTCpty86Y");
             }
 
             @Override

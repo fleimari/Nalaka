@@ -42,4 +42,12 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/luoArvostelu" />
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Arvostelusivu"
+        android:id="@+id/arvostelusivuButton"
+        app:layout_constraintTop_toBottomOf="@id/btnSiirryHakuun"
+        android:onClick="goToArvostelusivu"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
