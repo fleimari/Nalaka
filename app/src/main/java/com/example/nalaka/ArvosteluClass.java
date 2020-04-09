@@ -18,12 +18,16 @@ public class ArvosteluClass {
 
     String arvosteluId = "";
     String arvosteluTeksti = "";
-    String kaupunki = "ei nain";
+    String kaupunki = "";
     String kuvaUrl = "";
     String otsikko = "";
     String ravintola = "";
     String username = "";
     String viedoUrl = "";
+    String peukut = "";
+    String pisteet = "";
+    String tagit = "";
+
 
     String url = "https://eighth-anvil-272013.firebaseio.com/Arvostelut.json?print=pretty";
     JsonObjectRequest jsonObjectRequest;
@@ -64,6 +68,12 @@ public class ArvosteluClass {
         return viedoUrl;
     }
 
+    public String getPeukut() { return peukut; }
+
+    public String getPisteet() { return pisteet; }
+
+    public String getTagit() { return tagit; }
+
     public void haeJson()
     {
         jsonObjectRequest = new JsonObjectRequest
@@ -78,13 +88,17 @@ public class ArvosteluClass {
                         try {
 
                             JSONObject arvosteluJson = response.getJSONObject(arvosteluId);
-                            arvosteluTeksti = arvosteluJson.getString("Arvosteluteksti");
+                            arvosteluTeksti = arvosteluJson.getString("Teksti");
                             kaupunki = arvosteluJson.getString("Kaupunki");
                             kuvaUrl = arvosteluJson.getString("KuvaUrl");
                             otsikko = arvosteluJson.getString("Otsikko");
                             ravintola = arvosteluJson.getString("Ravintola");
-                            username = arvosteluJson.getString("Username");
+                            username = arvosteluJson.getString("User");
                             viedoUrl = arvosteluJson.getString("VideoUrl");
+                            peukut = arvosteluJson.getString("Peukut");
+                            pisteet = arvosteluJson.getString("Pisteet");
+
+                            tagit = arvosteluJson.getString("Tags");
 
 
                         } catch (JSONException e) {

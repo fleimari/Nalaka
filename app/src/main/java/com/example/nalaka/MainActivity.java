@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         MySingleton.getInstance(this);
 
-        testiOlio = new ArvosteluClass("Arvostelu2");
+        testiOlio = new ArvosteluClass("-M4JEs7K-JuO6umHvkAN");
 
     }
 
@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         if (v.getId() == R.id.btnSiirryHakuun)
         {
-            Log.d("testia", "onClick: " + testiOlio.getArvosteluTeksti()+ " " + testiOlio.getKaupunki());
+            Log.d("testia", "onClick: " + testiOlio.getPeukut()+ " " + testiOlio.getPisteet()+ " " + testiOlio.getTagit() );
             Intent intentHakuActivity = new Intent(this, HakuActivity.class);
             startActivity(intentHakuActivity);
         }
