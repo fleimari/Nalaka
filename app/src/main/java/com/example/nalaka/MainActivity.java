@@ -14,7 +14,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         findViewById(R.id.btnSiirryHakuun).setOnClickListener(this);
-
     }
 
     public void goToPaasivu(View view){
@@ -25,6 +24,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void goToLuoArvostelu(View view){
         Intent intentLuoArvostelu = new Intent(this, luoArvostelu.class);
         startActivity(intentLuoArvostelu);
+    }
+
+    public void goToArvostelusivu(View view){
+        Intent intentArvostelusivu = new Intent(this, Arvostelusivu.class);
+        startActivity(intentArvostelusivu);
     }
 
     @Override
