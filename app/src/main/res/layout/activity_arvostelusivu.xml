@@ -5,6 +5,8 @@
     android:id="@+id/arvostelusivu"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
     tools:context=".Arvostelusivu">
 
     <ImageButton
@@ -27,6 +29,11 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+            <view
+                android:id="@+id/youtubePlay"
+                class="com.google.android.youtube.player.YouTubePlayerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
 
             <Button
                 android:id="@+id/playButton"

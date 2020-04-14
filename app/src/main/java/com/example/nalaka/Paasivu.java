@@ -29,8 +29,7 @@ public class Paasivu extends YouTubeBaseActivity {
         initializedListener = new YouTubePlayer.OnInitializedListener() {
             @Override
             public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
-                //youTubePlayer.loadVideo("7RkcVwLR6_Q");
-                youTubePlayer.loadVideo("omGTCpty86Y");
+                youTubePlayer.loadVideo("d1CuRK-DEXU");
             }
 
             @Override
@@ -45,7 +44,6 @@ public class Paasivu extends YouTubeBaseActivity {
                 tubePlayerView.initialize(TubeConfig.getApiKey(), initializedListener);
             }
         });
-
     }
 
     public void goToLuoArvostelu(View view){
