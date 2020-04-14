@@ -43,7 +43,6 @@ public class luoArvostelu extends AppCompatActivity {
         adapterTags.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerTags.setAdapter(adapterTags);
 
-
     }
 
     @Override
