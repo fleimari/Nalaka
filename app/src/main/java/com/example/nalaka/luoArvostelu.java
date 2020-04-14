@@ -16,6 +16,7 @@ import android.widget.Spinner;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 public class luoArvostelu extends AppCompatActivity implements View.OnClickListener {
 
@@ -24,14 +25,18 @@ public class luoArvostelu extends AppCompatActivity implements View.OnClickListe
     Spinner spinnerKaupunki, spinnerRavintola, spinnerTags;
     ArrayAdapter<CharSequence> adapterKaupungit, adapterRavintolat, adapterTags;
     private DatabaseReference mDatabase;
-    private FirebaseStorage storage;
+    private FirebaseStorage storage; // kuvan liittämiseen jo valmiiksi reference
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_luo_arvostelu);
 
-        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabase = FirebaseDatabase.getInstance().getReference(); // Realtime tietokanta reference
+
+        // Storage tietokanta reference
+        //storage = FirebaseStorage.getInstance();
+        //StorageReference storageRef = storage.getReference();
 
          btnKamera = (Button) findViewById(R.id.buttonLisaaKuva);
          ivAnnos = (ImageView) findViewById(R.id.annosKuva);
