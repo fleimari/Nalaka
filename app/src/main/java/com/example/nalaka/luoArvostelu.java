@@ -13,17 +13,25 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
 
-public class luoArvostelu extends AppCompatActivity {
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+
+public class luoArvostelu extends AppCompatActivity implements View.OnClickListener {
 
     Button btnKamera;
     ImageView ivAnnos;
     Spinner spinnerKaupunki, spinnerRavintola, spinnerTags;
     ArrayAdapter<CharSequence> adapterKaupungit, adapterRavintolat, adapterTags;
+    private DatabaseReference mDatabase;
+    private FirebaseStorage storage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_luo_arvostelu);
+
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
          btnKamera = (Button) findViewById(R.id.buttonLisaaKuva);
          ivAnnos = (ImageView) findViewById(R.id.annosKuva);
@@ -43,6 +51,16 @@ public class luoArvostelu extends AppCompatActivity {
         adapterTags.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerTags.setAdapter(adapterTags);
 
+        findViewById(R.id.button2).setOnClickListener(this);
+
+    }
+
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.button2){
+            lisaaArvostelu();
+        }
 
     }
 
@@ -68,4 +86,57 @@ public class luoArvostelu extends AppCompatActivity {
         intentGalleria.setType("image/* video/*");
         startActivityForResult(intentGalleria, 0);
     }
+
+
+    public void lisaaArvostelu(){
+
+        // Siinä on nyt asetettu arvot mutta eihän se ole kuin lukea nuista kentistä ja korvata arvot niillä
+        String var = mDatabase.push().getKey();
+        String kaupunki = "Tampere";
+        String kuvaUrl = "https://img.devrant.com/devrant/rant/r_1973724_9QTSY.jpg";
+        String otsikko = "Da best";
+        String peukut = "19";
+        String pisteet = "5";
+        String ravintola = "Tampereen kepappila";
+        String teksti = "Hjuva paikka tulla sina kaumaan";
+        String user = "Pekka";
+        String videoUrl = "https://www.youtube.com/watch?v=iL7nX9W3aOU";
+
+        mDatabase.child("Arvostelut").child(var).child("Kaupunki").setValue(kaupunki);
+        mDatabase.child("Arvostelut").child(var).child("KuvaUrl").setValue(kuvaUrl);
+        mDatabase.child("Arvostelut").child(var).child("Otsikko").setValue(otsikko);
+        mDatabase.child("Arvostelut").child(var).child("Peukut").setValue(peukut);
+        mDatabase.child("Arvostelut").child(var).child("Pisteet").setValue(pisteet);
+        mDatabase.child("Arvostelut").child(var).child("Ravintola").setValue(ravintola);
+        mDatabase.child("Arvostelut").child(var).child("Teksti").setValue(teksti);
+        mDatabase.child("Arvostelut").child(var).child("User").setValue(user);
+        mDatabase.child("Arvostelut").child(var).child("VideoUrl").setValue(videoUrl);
+
+        // Tähän pitää varmaan rakentaa joku for-looppi että osaa tehdä sen verran komentoja kuin halutaan lisätä tageja.
+        String tag1 = "Kiinalainen";
+        String tag2 = "Japanilainen";
+        mDatabase.child("Arvostelut").child(var).child("Tags").push().setValue(tag1);
+        mDatabase.child("Arvostelut").child(var).child("Tags").push().setValue(tag2);
+    }
+
+    public void lisaaTagi(){
+
+        // Yksi rivi lisää aina yhden tagin Tags-tauluun
+        mDatabase.child("Tags").push().setValue("Piksa");
+        //mDatabase.child("Tags").push().setValue("Kepapo");
+        //mDatabase.child("Tags").push().setValue("Italialainen");
+        //mDatabase.child("Tags").push().setValue("Grillimättö");
+        //mDatabase.child("Tags").push().setValue("Kiinalainen");
+    }
+
+    public void lisaaKaupunki(){
+
+        String kaupunki = "Muhos";
+        String ravintola = "Muhoksen piksaKepapo";
+
+        mDatabase.child("Kaupungit").child(kaupunki).push().setValue(ravintola);
+
+    }
+
+
 }
