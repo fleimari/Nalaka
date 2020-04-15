@@ -6,8 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".luoArvostelu">
 
-<<<<<<< HEAD
-=======
     <Button
         android:id="@+id/buttonGalleria"
         android:layout_width="0dp"
@@ -162,5 +160,4 @@
         app:layout_constraintStart_toEndOf="@+id/spinnerRavintola"
         app:layout_constraintTop_toBottomOf="@+id/buttonGalleria" />
 
->>>>>>> devel
 </androidx.constraintlayout.widget.ConstraintLayout>
