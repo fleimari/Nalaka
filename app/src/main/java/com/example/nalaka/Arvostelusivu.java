@@ -12,7 +12,7 @@ import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerView;
 
-public class Paasivu extends YouTubeBaseActivity {
+public class Arvostelusivu extends YouTubeBaseActivity {
 
     YouTubePlayerView tubePlayerView;
     Button button;
@@ -21,7 +21,7 @@ public class Paasivu extends YouTubeBaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_paasivu);
+        setContentView(R.layout.activity_arvostelusivu);
 
         button = (Button) findViewById(R.id.playButton);
         tubePlayerView = (YouTubePlayerView) findViewById(R.id.youtubePlay);
@@ -29,7 +29,9 @@ public class Paasivu extends YouTubeBaseActivity {
         initializedListener = new YouTubePlayer.OnInitializedListener() {
             @Override
             public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
-                youTubePlayer.loadVideo("d1CuRK-DEXU");
+                youTubePlayer.loadVideo("xc1RCqidtTg");
+                //youTubePlayer.loadVideo("e6d72ac2-d36b-4c58-b64b-761f78f189bc");
+
             }
 
             @Override
@@ -44,6 +46,7 @@ public class Paasivu extends YouTubeBaseActivity {
                 tubePlayerView.initialize(TubeConfig.getApiKey(), initializedListener);
             }
         });
+
     }
 
     public void goToLuoArvostelu(View view){
@@ -51,3 +54,4 @@ public class Paasivu extends YouTubeBaseActivity {
         startActivity(intent);
     }
 }
+

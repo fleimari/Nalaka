@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     ListView list;
 
@@ -24,10 +24,30 @@ public class MainActivity extends AppCompatActivity {
         list = (ListView)findViewById(R.id.customList);
         list.setAdapter(adapter);
 
+        findViewById(R.id.btnSiirryHakuun).setOnClickListener(this);
     }
 
     public void goToPaasivu(View view){
         Intent intent = new Intent(this, Paasivu.class);
         startActivity(intent);
+    }
+
+    public void goToLuoArvostelu(View view){
+        Intent intentLuoArvostelu = new Intent(this, luoArvostelu.class);
+        startActivity(intentLuoArvostelu);
+    }
+
+    public void goToArvostelusivu(View view){
+        Intent intentArvostelusivu = new Intent(this, Arvostelusivu.class);
+        startActivity(intentArvostelusivu);
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.btnSiirryHakuun)
+        {
+            Intent intentHakuActivity = new Intent(this, HakuActivity.class);
+            startActivity(intentHakuActivity);
+        }
     }
 }
