@@ -36,8 +36,6 @@ public class ArvosteluClass {
         arvosteluId = id;
         haeJson();
 
-
-
     }
 
     public String getArvosteluTeksti() {
@@ -98,7 +96,7 @@ public class ArvosteluClass {
                             peukut = arvosteluJson.getString("Peukut");
                             pisteet = arvosteluJson.getString("Pisteet");
 
-                            tagit = arvosteluJson.getString("Tags");
+                            //tagit = arvosteluJson.getString("Tags");
 
 
                         } catch (JSONException e) {
