@@ -4,12 +4,15 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     ListView list;
+    ArvosteluClass testiOlio;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +29,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         findViewById(R.id.search_img_btn).setOnClickListener(this);
         findViewById(R.id.btnSiirryHakuun).setOnClickListener(this);
+        MySingleton.getInstance(this);
+
+        testiOlio = new ArvosteluClass("-M4JEs7K-JuO6umHvkAN");
+
     }
 
     public void goToPaasivu(View view){
@@ -47,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         if (v.getId() == R.id.btnSiirryHakuun)
         {
+            Log.d("testia", "onClick: " + testiOlio.getPeukut()+ " " + testiOlio.getPisteet()+ " " + testiOlio.getTagit() );
             Intent intentHakuActivity = new Intent(this, HakuActivity.class);
             startActivity(intentHakuActivity);
         }

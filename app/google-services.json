@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "824745626993",
+    "firebase_url": "https://eighth-anvil-272013.firebaseio.com",
+    "project_id": "eighth-anvil-272013",
+    "storage_bucket": "eighth-anvil-272013.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:824745626993:android:dd6967d52653d19e1bfad0",
+        "android_client_info": {
+          "package_name": "com.example.firebasetesti"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "824745626993-qh82cpshmu8lvcde7nekl6n4phdoo4m4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD1HwAk2saYEophm0VUq_BIOPHAtDrQtwo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "824745626993-qh82cpshmu8lvcde7nekl6n4phdoo4m4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:824745626993:android:74260044a90605511bfad0",
+        "android_client_info": {
+          "package_name": "com.example.nalaka"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "824745626993-qh82cpshmu8lvcde7nekl6n4phdoo4m4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD1HwAk2saYEophm0VUq_BIOPHAtDrQtwo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "824745626993-qh82cpshmu8lvcde7nekl6n4phdoo4m4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
