@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -56,9 +57,15 @@ public class CustomAdapter extends ArrayAdapter<ArvosteluClass> {
         ArvosteluClass currentArvostelu = arvostelutList.get(position);
 
 
+
+
         TextView text = (TextView) vi.findViewById(R.id.arvosteluteksti);
         TextView title = vi.findViewById(R.id.title);
         ImageView image = vi.findViewById(R.id.listIMG);
+
+        RatingBar stars = (RatingBar) vi.findViewById(R.id.starRating);
+        stars.setRating(Float.parseFloat(currentArvostelu.getPisteet()));
+
         text.setText(currentArvostelu.getArvosteluTeksti());
         title.setText(currentArvostelu.getOtsikko());
         //image.setImageURI(currentArvostelu.getKuvaUrl());

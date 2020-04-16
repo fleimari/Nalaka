@@ -14,6 +14,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 public class ArvosteluClass {
 
     String arvosteluId = "";
@@ -25,8 +27,8 @@ public class ArvosteluClass {
     String username = "";
     String viedoUrl = "";
     String peukut = "";
-    String pisteet = "";
-    String tagit = "";
+    String pisteet = "0";
+    ArrayList<String> tagit = new ArrayList<>();
 
 
     String url = "https://eighth-anvil-272013.firebaseio.com/Arvostelut.json?print=pretty";
@@ -70,7 +72,7 @@ public class ArvosteluClass {
 
     public String getPisteet() { return pisteet; }
 
-    public String getTagit() { return tagit; }
+    public ArrayList<String> getTagit() { return tagit; }
 
     public void haeJson()
     {
@@ -96,7 +98,13 @@ public class ArvosteluClass {
                             peukut = arvosteluJson.getString("Peukut");
                             pisteet = arvosteluJson.getString("Pisteet");
 
-                            //tagit = arvosteluJson.getString("Tags");
+                            
+                            JSONArray tagitArray = arvosteluJson.getJSONArray("Tags");
+                            for (int i = 0; i < tagitArray.length(); i++) {
+                                tagit.add(tagitArray.get(i).toString());
+                                Log.d("testiTagit", "onResponse: " + tagitArray.get(i).toString());
+                            }
+
 
 
                         } catch (JSONException e) {
