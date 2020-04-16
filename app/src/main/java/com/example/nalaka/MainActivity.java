@@ -14,7 +14,6 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     ListView list;
-    ArvosteluClass testiOlio;
     ArrayList<ArvosteluClass> arvostelutLista = new ArrayList<>();
     CustomAdapter adapter;
 
@@ -45,8 +44,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         adapter = new CustomAdapter(this, arvostelutLista);
         list = (ListView)findViewById(R.id.customList);
         list.setAdapter(adapter);
-
-
 
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {

@@ -98,11 +98,12 @@ public class ArvosteluClass {
                             peukut = arvosteluJson.getString("Peukut");
                             pisteet = arvosteluJson.getString("Pisteet");
 
-                            
-                            JSONArray tagitArray = arvosteluJson.getJSONArray("Tags");
-                            for (int i = 0; i < tagitArray.length(); i++) {
-                                tagit.add(tagitArray.get(i).toString());
-                                Log.d("testiTagit", "onResponse: " + tagitArray.get(i).toString());
+                            JSONObject tagi = arvosteluJson.getJSONObject("Tags");
+                            JSONArray tagiArr = tagi.names();
+
+                            for (int i = 0; i < tagiArr.length(); i++) {
+                                tagit.add(tagi.getString(tagiArr.get(i).toString()));
+                                //Log.d("testiTagit", "onResponse: " + tagi.getString(tagiArr.get(i).toString()));
                             }
 
 

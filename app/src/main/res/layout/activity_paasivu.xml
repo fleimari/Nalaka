@@ -9,54 +9,14 @@
     android:paddingRight="10dp"
     tools:context=".Paasivu">
 
-    <ImageButton
-        android:id="@+id/searchButton"
-        android:layout_width="wrap_content"
+    <ListView
+        android:id="@+id/listViewPaasivu"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@android:drawable/ic_menu_search"
-        app:layout_constraintTop_toTopOf="parent"/>
-
-    <ScrollView
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/luoArvostelu"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/searchButton">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <view
-                android:id="@+id/youtubePlay"
-                class="com.google.android.youtube.player.YouTubePlayerView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-
-            <Button
-                android:id="@+id/playButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Play"
-                app:layout_constraintTop_toBottomOf="@+id/youtubePlay"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"/>
-
-
-
-
-
-            <RatingBar
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:numStars="5"
-                android:rating="3"/>
-
-        </LinearLayout>
-
-    </ScrollView>
+        app:layout_constraintBottom_toTopOf="@id/luoArvostelu"
+        app:layout_constraintTop_toTopOf="parent"
+        android:scrollbars="vertical"
+        app:layout_constrainedHeight="true"/>
 
     <Button
         android:id="@+id/luoArvostelu"
