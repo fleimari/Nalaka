@@ -18,7 +18,7 @@ import com.google.android.youtube.player.YouTubePlayerView;
 
 import java.util.ArrayList;
 
-public class Paasivu extends AppCompatActivity implements AdapterView.OnItemClickListener {
+public class Paasivu extends AppCompatActivity implements AdapterView.OnItemClickListener, View.OnClickListener {
 
     ListView list;
     ArrayList<ArvosteluClass> arvostelutLista = new ArrayList<>();
@@ -30,6 +30,9 @@ public class Paasivu extends AppCompatActivity implements AdapterView.OnItemClic
         setContentView(R.layout.activity_paasivu);
 
         MySingleton.getInstance(this);
+        findViewById(R.id.search_img_btn).setOnClickListener(this);
+        findViewById(R.id.logo_btn).setOnClickListener(this);
+        findViewById(R.id.menu_img_btn).setOnClickListener(this);
 
         ArvosteluClass arvostelu1 = new ArvosteluClass("-M4TOEDQPKXuYKQmjL7S");
         ArvosteluClass arvostelu2 = new ArvosteluClass("-M4TPdXyfp3_W_KMlRle");
@@ -75,5 +78,10 @@ public class Paasivu extends AppCompatActivity implements AdapterView.OnItemClic
     {
         adapter.notifyDataSetChanged();
         list.setOnItemClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+
     }
 }

@@ -2,6 +2,7 @@ package com.example.nalaka;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -27,6 +28,8 @@ public class HakuActivity extends AppCompatActivity implements View.OnClickListe
 
         findViewById(R.id.BtnTaginLisays).setOnClickListener(this);
         findViewById(R.id.BtnHaku).setOnClickListener(this);
+        findViewById(R.id.logo_btn).setOnClickListener(this);
+        findViewById(R.id.menu_img_btn).setOnClickListener(this);
         atv = findViewById(R.id.AutoHaku);
         atv.setAdapter(new ArrayAdapter<String>(HakuActivity.this, android.R.layout.simple_list_item_1, kaupungit));
 
@@ -52,6 +55,10 @@ public class HakuActivity extends AppCompatActivity implements View.OnClickListe
         if (v.getId() == R.id.BtnHaku)
         {
             haettavatTagi.clear();
+        }
+        if (v.getId() == R.id.logo_btn){
+            Intent intentPaasivu = new Intent (this, Paasivu.class);
+            startActivity(intentPaasivu);
         }
 
     }

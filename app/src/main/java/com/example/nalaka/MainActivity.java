@@ -80,7 +80,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.search_img_btn) {
-
+            Intent intentHakuActivity = new Intent(this, HakuActivity.class);
+            startActivity(intentHakuActivity);
         }
         if (v.getId() == R.id.btnSiirryHakuun) {
 
@@ -89,6 +90,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         if (v.getId() == R.id.logo_btn){
             Intent intentPaasivu = new Intent (this, Paasivu.class);
+            startActivity(intentPaasivu);
+        }
+        if (v.getId() == R.id.menu_img_btn) {
+
         }
     }
 }
