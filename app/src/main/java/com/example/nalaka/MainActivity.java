@@ -28,6 +28,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         list.setAdapter(adapter);
 
         findViewById(R.id.search_img_btn).setOnClickListener(this);
+        findViewById(R.id.logo_btn).setOnClickListener(this);
+        findViewById(R.id.menu_img_btn).setOnClickListener(this);
+
         MySingleton.getInstance(this);
 
         testiOlio = new ArvosteluClass("-M4JEs7K-JuO6umHvkAN");
@@ -54,6 +57,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (v.getId() == R.id.search_img_btn){
             Intent intentHakuActivity = new Intent(this, HakuActivity.class);
             startActivity(intentHakuActivity);
+        }
+        if (v.getId() == R.id.logo_btn){
+            Intent intentPaasivu = new Intent (this, Paasivu.class);
         }
     }
 }

@@ -12,7 +12,7 @@ import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerView;
 
-public class Arvostelusivu extends YouTubeBaseActivity {
+public class Arvostelusivu extends YouTubeBaseActivity implements View.OnClickListener {
 
     YouTubePlayerView tubePlayerView;
     Button button;
@@ -22,6 +22,10 @@ public class Arvostelusivu extends YouTubeBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_arvostelusivu);
+
+        findViewById(R.id.search_img_btn).setOnClickListener(this);
+        findViewById(R.id.logo_btn).setOnClickListener(this);
+        findViewById(R.id.menu_img_btn).setOnClickListener(this);
 
         button = (Button) findViewById(R.id.playButton);
         tubePlayerView = (YouTubePlayerView) findViewById(R.id.youtubePlay);
@@ -52,6 +56,14 @@ public class Arvostelusivu extends YouTubeBaseActivity {
     public void goToLuoArvostelu(View view){
         Intent intent = new Intent(this, luoArvostelu.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.search_img_btn){
+            Intent intentHakuActivity = new Intent(this, HakuActivity.class);
+            startActivity(intentHakuActivity);
+        }
     }
 }
 

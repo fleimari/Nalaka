@@ -57,6 +57,9 @@ public class luoArvostelu extends AppCompatActivity implements View.OnClickListe
         spinnerTags.setAdapter(adapterTags);
 
         findViewById(R.id.button2).setOnClickListener(this);
+        findViewById(R.id.search_img_btn).setOnClickListener(this);
+        findViewById(R.id.logo_btn).setOnClickListener(this);
+        findViewById(R.id.menu_img_btn).setOnClickListener(this);
 
     }
 
@@ -65,6 +68,10 @@ public class luoArvostelu extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         if (v.getId() == R.id.button2){
             lisaaArvostelu();
+        }
+        if (v.getId() == R.id.search_img_btn){
+            Intent intentHakuActivity = new Intent(this, HakuActivity.class);
+            startActivity(intentHakuActivity);
         }
 
     }
