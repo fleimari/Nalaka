@@ -7,11 +7,14 @@ import android.graphics.Bitmap;
 import android.media.Image;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -69,9 +72,37 @@ public class luoArvostelu extends AppCompatActivity implements View.OnClickListe
         if (v.getId() == R.id.button2){
             lisaaArvostelu();
         }
-        if (v.getId() == R.id.search_img_btn){
+        if (v.getId() == R.id.search_img_btn) {
             Intent intentHakuActivity = new Intent(this, HakuActivity.class);
             startActivity(intentHakuActivity);
+        }
+        if (v.getId() == R.id.logo_btn){
+            Intent intentPaasivu = new Intent (this, Paasivu.class);
+            startActivity(intentPaasivu);
+        }
+        if (v.getId() == R.id.menu_img_btn) {
+            PopupMenu popup = new PopupMenu(luoArvostelu.this, findViewById(R.id.menu_img_btn));
+            popup.getMenuInflater().inflate(R.menu.menu, popup.getMenu());
+            popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                public boolean onMenuItemClick(MenuItem item) {
+                    switch(item.getItemId()) {
+                        case R.id.three:
+                            Toast.makeText(luoArvostelu.this, "Farewell", Toast.LENGTH_SHORT).show();
+                            finish();
+                            return true;
+                        case R.id.two:
+                            Toast.makeText(luoArvostelu.this, "Nothing here sorry", Toast.LENGTH_LONG).show();
+                            return true;
+                        case R.id.one:
+                            Intent intentPaasivu = new Intent (luoArvostelu.this, Paasivu.class);
+                            startActivity(intentPaasivu);
+                            Toast.makeText(luoArvostelu.this, "Pääsivu", Toast.LENGTH_SHORT).show();
+                            return true;
+                    }
+                    return false;
+                }
+            });
+            popup.show();
         }
 
     }

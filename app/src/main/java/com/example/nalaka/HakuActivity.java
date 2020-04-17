@@ -4,11 +4,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.PopupMenu;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -59,6 +62,30 @@ public class HakuActivity extends AppCompatActivity implements View.OnClickListe
         if (v.getId() == R.id.logo_btn){
             Intent intentPaasivu = new Intent (this, Paasivu.class);
             startActivity(intentPaasivu);
+        }
+        if (v.getId() == R.id.menu_img_btn) {
+            PopupMenu popup = new PopupMenu(HakuActivity.this, findViewById(R.id.menu_img_btn));
+            popup.getMenuInflater().inflate(R.menu.menu, popup.getMenu());
+            popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                public boolean onMenuItemClick(MenuItem item) {
+                    switch(item.getItemId()) {
+                        case R.id.three:
+                            Toast.makeText(HakuActivity.this, "Farewell", Toast.LENGTH_SHORT).show();
+                            finish();
+                            return true;
+                        case R.id.two:
+                            Toast.makeText(HakuActivity.this, "Nothing here sorry", Toast.LENGTH_LONG).show();
+                            return true;
+                        case R.id.one:
+                            Intent intentPaasivu = new Intent (HakuActivity.this, Paasivu.class);
+                            startActivity(intentPaasivu);
+                            Toast.makeText(HakuActivity.this, "Pääsivu", Toast.LENGTH_SHORT).show();
+                            return true;
+                    }
+                    return false;
+                }
+            });
+            popup.show();
         }
 
     }

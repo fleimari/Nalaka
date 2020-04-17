@@ -6,8 +6,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.PopupMenu;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -93,7 +96,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             startActivity(intentPaasivu);
         }
         if (v.getId() == R.id.menu_img_btn) {
-
+            PopupMenu popup = new PopupMenu(MainActivity.this, findViewById(R.id.menu_img_btn));
+            popup.getMenuInflater().inflate(R.menu.menu, popup.getMenu());
+            popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                public boolean onMenuItemClick(MenuItem item) {
+                    switch(item.getItemId()) {
+                        case R.id.three:
+                            Toast.makeText(MainActivity.this, "Farewell", Toast.LENGTH_SHORT).show();
+                            finish();
+                            return true;
+                        case R.id.two:
+                            Toast.makeText(MainActivity.this, "Nothing here sorry", Toast.LENGTH_LONG).show();
+                            return true;
+                        case R.id.one:
+                            Intent intentPaasivu = new Intent (MainActivity.this, Paasivu.class);
+                            startActivity(intentPaasivu);
+                            Toast.makeText(MainActivity.this, "Pääsivu", Toast.LENGTH_SHORT).show();
+                            return true;
+                    }
+                    return false;
+                }
+            });
+            popup.show();
         }
+
     }
 }
