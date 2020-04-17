@@ -120,10 +120,6 @@ public class luoArvostelu extends AppCompatActivity implements View.OnClickListe
         startActivityForResult(intentKuva, 0);
     }
 
-    public void otaVideo (View view){
-        Intent intentVideo = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
-        startActivityForResult(intentVideo, 0);
-    }
 
     public void valitseGalleria (View view){
         Intent intentGalleria = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
