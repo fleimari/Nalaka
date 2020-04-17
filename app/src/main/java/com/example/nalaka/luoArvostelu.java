@@ -92,7 +92,6 @@ public class luoArvostelu extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.button2).setOnClickListener(this);
         haeKaupungit();
         haeTagit();
-        haeRavintolat("Helsinki");
 
         spinnerKaupunki.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
@@ -111,8 +110,13 @@ public class luoArvostelu extends AppCompatActivity implements View.OnClickListe
         spinnerRavintola.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
                 Object item = parent.getItemAtPosition(pos);
-                if(item.toString() == "Lisää ravintola" && spinnerKaupunki.getSelectedItem().toString() != "Valitse" && spinnerKaupunki.getSelectedItem().toString()!="Lisää kaupunki"){
-                    popUpRavintola("Lisää ravintola");
+                if(item.toString() == "Lisää ravintola"){
+                    if(spinnerKaupunki.getSelectedItem().toString() != "Valitse" && spinnerKaupunki.getSelectedItem().toString()!="Lisää kaupunki"){
+                        popUpRavintola("Lisää ravintola");
+                    }else{
+                        toast("Valitse kaupunki");
+                    }
+
                 }
             }
             public void onNothingSelected(AdapterView<?> parent) {
@@ -128,6 +132,9 @@ public class luoArvostelu extends AppCompatActivity implements View.OnClickListe
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
+    }
+    public void toast(String message){
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -211,95 +218,116 @@ public class luoArvostelu extends AppCompatActivity implements View.OnClickListe
 
     public void lisaaTagi(String tagi){
         mDatabase.child("Tags").push().setValue(tagi);
+        toast("Tagi lisätty");
+        haeTagit();
     }
 
     public void lisaaKaupunki(String kaupunki){
         mDatabase.child("Kaupungit").child(kaupunki).push().setValue("Hesburger");
+        toast("Kaupunki lisätty");
         haeKaupungit();
     }
     public void lisaaRavintola(String kaupunki, String ravintola){
         mDatabase.child("Kaupungit").child(kaupunki).push().setValue(ravintola);
+        toast("Ravintola lisätty");
+        haeRavintolat(spinnerKaupunki.getSelectedItem().toString());
     }
 
     public void haeKaupungit(){
-        kaupunkiList.clear();
-        kaupunkiList.add("Valitse");
-        String url = "https://eighth-anvil-272013.firebaseio.com/Kaupungit.json?print=pretty";
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
-                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            JSONArray list = response.names();
-                            for(int i = 0; i<response.length();i++){
-                                kaupunkiList.add(list.get(i).toString());
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                kaupunkiList.clear();
+                kaupunkiList.add("Valitse");
+                String url = "https://eighth-anvil-272013.firebaseio.com/Kaupungit.json?print=pretty";
+                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                        (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                try {
+                                    JSONArray list = response.names();
+                                    for(int i = 0; i<response.length();i++){
+                                        kaupunkiList.add(list.get(i).toString());
+                                    }
+                                    kaupunkiList.add("Lisää kaupunki");
+                                    kaupunkiAdapter.notifyDataSetChanged();
+                                }catch (Exception e){}
                             }
-                            kaupunkiList.add("Lisää kaupunki");
-                            kaupunkiAdapter.notifyDataSetChanged();
-                        }catch (Exception e){}
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                    }
-                });
-        queue.add(jsonObjectRequest);
+                        }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                            }
+                        });
+                queue.add(jsonObjectRequest);
+            }
+        });
+
     }
 
     public void haeRavintolat(final String kaupunki){
-        ravintolaList.clear();
-        ravintolaList.add("Valitse");
-        String url = "https://eighth-anvil-272013.firebaseio.com/Kaupungit.json?print=pretty";
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
-                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try{
-                            JSONObject arr = response.getJSONObject(kaupunki);
-                            JSONArray testlist = arr.names();
-                            for(int i =0;i<testlist.length();i++){
-                                String ravintola = arr.getString(testlist.getString(i).toString());
-                                ravintolaList.add(ravintola);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ravintolaList.clear();
+                ravintolaList.add("Valitse");
+                String url = "https://eighth-anvil-272013.firebaseio.com/Kaupungit.json?print=pretty";
+                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                        (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                try{
+                                    JSONObject arr = response.getJSONObject(kaupunki);
+                                    JSONArray testlist = arr.names();
+                                    for(int i =0;i<testlist.length();i++){
+                                        String ravintola = arr.getString(testlist.getString(i).toString());
+                                        ravintolaList.add(ravintola);
+                                    }
+                                    ravintolaList.add("Lisää ravintola");
+                                    kaupunkiAdapter.notifyDataSetChanged();
+
+                                }catch (Exception e){}
                             }
-                            ravintolaList.add("Lisää ravintola");
-                            kaupunkiAdapter.notifyDataSetChanged();
+                        }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                            }
+                        });
 
-                        }catch (Exception e){}
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                    }
-                });
-
-        queue.add(jsonObjectRequest);
+                queue.add(jsonObjectRequest);
+            }
+        });
     }
 
     public void haeTagit(){
-        tagiList.add("Valitse");
-        String url = "https://eighth-anvil-272013.firebaseio.com/Tags.json?print=pretty";
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
-                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            //JSONObject arr = response.getJSONObject("Tags");
-                            JSONArray testlist = response.names();
-                            for(int i =0;i<testlist.length();i++){
-                                String testi = response.getString(testlist.getString(i).toString());
-                                tagiList.add(testi);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                tagiList.add("Valitse");
+                String url = "https://eighth-anvil-272013.firebaseio.com/Tags.json?print=pretty";
+                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                        (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                try {
+                                    //JSONObject arr = response.getJSONObject("Tags");
+                                    JSONArray testlist = response.names();
+                                    for(int i =0;i<testlist.length();i++){
+                                        String testi = response.getString(testlist.getString(i).toString());
+                                        tagiList.add(testi);
+                                    }
+                                    tagiList.add("Lisää tagi");
+                                    tagiAdapter.notifyDataSetChanged();
+                                }catch (Exception e){}
                             }
-                            tagiList.add("Lisää tagi");
-                            tagiAdapter.notifyDataSetChanged();
-                        }catch (Exception e){}
-                    }
-                }, new Response.ErrorListener() {
+                        }, new Response.ErrorListener() {
 
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                    }
-                });
-        queue.add(jsonObjectRequest);
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                            }
+                        });
+                queue.add(jsonObjectRequest);
+        }
+        });
     }
 
     public void popUpKaupunki(String otsikko){
