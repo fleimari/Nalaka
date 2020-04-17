@@ -14,7 +14,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class ArvosteluClass {
+import java.io.Serializable;
+import java.util.ArrayList;
+
+public class ArvosteluClass implements Serializable {
 
     String arvosteluId = "";
     String arvosteluTeksti = "";
@@ -25,18 +28,16 @@ public class ArvosteluClass {
     String username = "";
     String viedoUrl = "";
     String peukut = "";
-    String pisteet = "";
-    String tagit = "";
+    String pisteet = "0";
+    ArrayList<String> tagit = new ArrayList<>();
 
 
     String url = "https://eighth-anvil-272013.firebaseio.com/Arvostelut.json?print=pretty";
-    JsonObjectRequest jsonObjectRequest;
+    public static transient JsonObjectRequest jsonObjectRequest;
 
     public ArvosteluClass(String id) {
         arvosteluId = id;
         haeJson();
-
-
 
     }
 
@@ -72,7 +73,7 @@ public class ArvosteluClass {
 
     public String getPisteet() { return pisteet; }
 
-    public String getTagit() { return tagit; }
+    public ArrayList<String> getTagit() { return tagit; }
 
     public void haeJson()
     {
@@ -98,7 +99,14 @@ public class ArvosteluClass {
                             peukut = arvosteluJson.getString("Peukut");
                             pisteet = arvosteluJson.getString("Pisteet");
 
-                            tagit = arvosteluJson.getString("Tags");
+                            JSONObject tagi = arvosteluJson.getJSONObject("Tags");
+                            JSONArray tagiArr = tagi.names();
+
+                            for (int i = 0; i < tagiArr.length(); i++) {
+                                tagit.add(tagi.getString(tagiArr.get(i).toString()));
+                                //Log.d("testiTagit", "onResponse: " + tagi.getString(tagiArr.get(i).toString()));
+                            }
+
 
 
                         } catch (JSONException e) {

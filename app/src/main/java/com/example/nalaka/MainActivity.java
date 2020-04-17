@@ -4,14 +4,18 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     ListView list;
-    ArvosteluClass testiOlio;
+    ArrayList<ArvosteluClass> arvostelutLista = new ArrayList<>();
+    CustomAdapter adapter;
 
 
     @Override
@@ -19,18 +23,39 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        MySingleton.getInstance(this);
+
+        /*
         String [] data = {"Toni on homo", "Dis was d good pizza and my likes", "Pesäpallo on Suomen kansallispeli ja pelisäännöt sen yleinen perusta. Pesäpallon pelisääntöjä täydentää Pesäpallotuomarin ohjekirja, jossa on esimerkkejä sääntökohtien soveltamisesta ja suositeltavista tuomareiden menettelytavoista", "moi"};
         String [] otsikkoData = {"Oulun paras kaenkky", "NomNom all day", "Mikä laji?", "NuGet"};
-        Integer[] imageArray = {R.drawable.pizzaimg,R.drawable.kebaba,R.drawable.susinom,R.drawable.mmmbeer};
+        Integer[] imageArray = {R.drawable.pizzaimg,R.drawable.kebaba,R.drawable.susinom,R.drawable.mmmbeer};*/
 
-        CustomAdapter adapter = new CustomAdapter(this, data, otsikkoData, imageArray);
+
+        ArvosteluClass arvostelu1 = new ArvosteluClass("-M4TOEDQPKXuYKQmjL7S");
+        ArvosteluClass arvostelu2 = new ArvosteluClass("-M4TPdXyfp3_W_KMlRle");
+        ArvosteluClass arvostelu3 = new ArvosteluClass("-M4TQAt4t18s1SNpN-jC");
+        ArvosteluClass arvostelu4 = new ArvosteluClass("-M4TQZ5XI0ikwHlYR_5y");
+        arvostelutLista.add(arvostelu1);
+        arvostelutLista.add(arvostelu2);
+        arvostelutLista.add(arvostelu3);
+        arvostelutLista.add(arvostelu4);
+
+
+        adapter = new CustomAdapter(this, arvostelutLista);
         list = (ListView)findViewById(R.id.customList);
         list.setAdapter(adapter);
 
         findViewById(R.id.search_img_btn).setOnClickListener(this);
         MySingleton.getInstance(this);
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            public void run() {
+                adapter.notifyDataSetChanged();
+            }
+        }, 2000);
 
-        testiOlio = new ArvosteluClass("-M4JEs7K-JuO6umHvkAN");
+        findViewById(R.id.btnSiirryHakuun).setOnClickListener(this);
+
 
     }
 
@@ -51,7 +76,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.search_img_btn){
+        if (v.getId() == R.id.search_img_btn) {
+
+        }
+        if (v.getId() == R.id.btnSiirryHakuun) {
+
             Intent intentHakuActivity = new Intent(this, HakuActivity.class);
             startActivity(intentHakuActivity);
         }
