@@ -5,7 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 
@@ -16,7 +18,7 @@ import com.google.android.youtube.player.YouTubePlayerView;
 
 import java.util.ArrayList;
 
-public class Paasivu extends AppCompatActivity {
+public class Paasivu extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
     ListView list;
     ArrayList<ArvosteluClass> arvostelutLista = new ArrayList<>();
@@ -47,7 +49,8 @@ public class Paasivu extends AppCompatActivity {
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             public void run() {
-                adapter.notifyDataSetChanged();
+                updateList();
+
             }
         }, 2000);
 
@@ -56,5 +59,21 @@ public class Paasivu extends AppCompatActivity {
     public void goToLuoArvostelu(View view){
         Intent intent = new Intent(this, luoArvostelu.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+        //Log.d("testiPaa", "onItemClick: " + arvostelutLista.get(position).getOtsikko());
+
+        Intent intent = new Intent(this, Arvostelusivu.class);
+        intent.putExtra("AlueetClass",arvostelutLista.get(position));
+        startActivity(intent);
+    }
+
+    public void updateList()
+    {
+        adapter.notifyDataSetChanged();
+        list.setOnItemClickListener(this);
     }
 }

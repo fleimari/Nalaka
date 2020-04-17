@@ -14,9 +14,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class ArvosteluClass {
+public class ArvosteluClass implements Serializable {
 
     String arvosteluId = "";
     String arvosteluTeksti = "";
@@ -32,7 +33,7 @@ public class ArvosteluClass {
 
 
     String url = "https://eighth-anvil-272013.firebaseio.com/Arvostelut.json?print=pretty";
-    JsonObjectRequest jsonObjectRequest;
+    public static transient JsonObjectRequest jsonObjectRequest;
 
     public ArvosteluClass(String id) {
         arvosteluId = id;
