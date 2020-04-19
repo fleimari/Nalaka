@@ -80,7 +80,6 @@ public class Arvostelusivu extends AppCompatActivity {
     }
 
     public void changeView(View v) {
-
         i++;
         if (i == 1) {
             videoPlayer.setVisibility(View.VISIBLE);
