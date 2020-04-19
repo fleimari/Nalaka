@@ -36,7 +36,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:text="Image"
         android:id="@+id/imageButton"
-        android:onClick="getImage"/>
+        android:onClick="changeView"/>
 
     <ScrollView
         android:layout_width="0dp"
