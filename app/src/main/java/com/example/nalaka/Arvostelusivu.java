@@ -21,6 +21,8 @@ public class Arvostelusivu extends AppCompatActivity {
     VideoView videoPlayer;
     ImageView imageViewer;
     int i = 0;
+    ArvosteluClass arvostelutiedot;
+    String kuvaURL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +31,10 @@ public class Arvostelusivu extends AppCompatActivity {
 
         videoPlayer = (VideoView) findViewById(R.id.videoView);
         imageViewer = (ImageView) findViewById(R.id.imageView);
+
+
+        arvostelutiedot = (ArvosteluClass) getIntent().getSerializableExtra("Arvostelu");
+        kuvaURL = arvostelutiedot.getKuvaUrl();
 
 
         String videoUrl = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/VolkswagenGTIReview.mp4";

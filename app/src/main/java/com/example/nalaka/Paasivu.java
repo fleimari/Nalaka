@@ -61,7 +61,7 @@ public class Paasivu extends AppCompatActivity implements AdapterView.OnItemClic
         //Log.d("testiPaa", "onItemClick: " + arvostelutLista.get(position).getOtsikko());
 
         Intent intent = new Intent(this, Arvostelusivu.class);
-        intent.putExtra("AlueetClass",arvostelutLista.get(position));
+        intent.putExtra("Arvostelu",arvostelutLista.get(position));
         startActivity(intent);
     }
 
