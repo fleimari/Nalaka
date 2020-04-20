@@ -11,6 +11,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.MediaController;
+import android.widget.RatingBar;
+import android.widget.TextView;
 import android.widget.VideoView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,8 +30,13 @@ public class Arvostelusivu extends AppCompatActivity implements View.OnClickList
     VideoView videoPlayer;
     ImageView imageViewer;
     int i = 0;
+    
     ArvosteluClass arvostelutiedot;
+    String otsikko;
+    String arvosteluteksti;
+    String tahdet;
     String kuvaURL;
+    String videoURL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,14 +46,27 @@ public class Arvostelusivu extends AppCompatActivity implements View.OnClickList
 
         videoPlayer = (VideoView) findViewById(R.id.videoView);
         imageViewer = (ImageView) findViewById(R.id.imageView);
+        TextView textOtsikko = findViewById(R.id.textViewOtsikko);
+        TextView textArvostelu = findViewById(R.id.textViewArvostelu);
+        RatingBar arvostelutahdet = findViewById(R.id.ratingBar);
         
         findViewById(R.id.search_img_btn).setOnClickListener(this);
         findViewById(R.id.logo_btn).setOnClickListener(this);
         findViewById(R.id.menu_img_btn).setOnClickListener(this);
 
+        arvostelutiedot = (ArvosteluClass) getIntent().getSerializableExtra("Arvostelu");
 
-        //arvostelutiedot = (ArvosteluClass) getIntent().getSerializableExtra("Arvostelu");
-        //kuvaURL = arvostelutiedot.getKuvaUrl();
+        otsikko = arvostelutiedot.getOtsikko();
+        arvosteluteksti = arvostelutiedot.getArvosteluTeksti();
+        tahdet = arvostelutiedot.getPisteet();
+        kuvaURL = arvostelutiedot.getKuvaUrl();
+        videoURL = arvostelutiedot.getViedoUrl();
+
+        textOtsikko.setText(otsikko);
+        textArvostelu.setText(arvosteluteksti);
+        arvostelutahdet.setRating(Integer.parseInt(tahdet));
+
+
 
 
         String videoUrl = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/VolkswagenGTIReview.mp4";
