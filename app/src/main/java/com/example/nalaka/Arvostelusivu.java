@@ -27,16 +27,16 @@ import android.widget.Toast;
 
 public class Arvostelusivu extends AppCompatActivity implements View.OnClickListener {
 
-    VideoView videoPlayer;
-    ImageView imageViewer;
-    int i = 0;
-    
     ArvosteluClass arvostelutiedot;
     String otsikko;
     String arvosteluteksti;
     String tahdet;
     String kuvaURL;
     String videoURL;
+
+    VideoView videoPlayer;
+    ImageView imageViewer;
+    int i = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +55,6 @@ public class Arvostelusivu extends AppCompatActivity implements View.OnClickList
         findViewById(R.id.menu_img_btn).setOnClickListener(this);
 
         arvostelutiedot = (ArvosteluClass) getIntent().getSerializableExtra("Arvostelu");
-
         otsikko = arvostelutiedot.getOtsikko();
         arvosteluteksti = arvostelutiedot.getArvosteluTeksti();
         tahdet = arvostelutiedot.getPisteet();
@@ -67,9 +66,8 @@ public class Arvostelusivu extends AppCompatActivity implements View.OnClickList
         arvostelutahdet.setRating(Integer.parseInt(tahdet));
 
 
-
-
-        String videoUrl = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/VolkswagenGTIReview.mp4";
+        String videoUrl = videoURL;
+        //String videoUrl = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/VolkswagenGTIReview.mp4";
         //String videoUrl = "https://firebasestorage.googleapis.com/v0/b/eighth-anvil-272013.appspot.com/o/testi.mp4?alt=media&token=c8e085b3-30ff-4c75-8dd2-cb33e2ea5eb1";
 
         Uri viUri = Uri.parse(videoUrl);
@@ -80,7 +78,8 @@ public class Arvostelusivu extends AppCompatActivity implements View.OnClickList
         mediaController.setAnchorView(videoPlayer);
 
         new DownloadImageTask(imageViewer)
-                .execute("https://www.worldatlas.com/r/w728-h425-c728x425/upload/06/06/04/shutterstock-591122330.jpg");
+                .execute(kuvaURL);
+                //.execute("https://www.worldatlas.com/r/w728-h425-c728x425/upload/06/06/04/shutterstock-591122330.jpg");
                 //.execute("https://firebasestorage.googleapis.com/v0/b/eighth-anvil-272013.appspot.com/o/It%27s%20me.png?alt=media&token=bb1db93d-2007-4bcc-8fe0-66b8f4d271c0");
 
     }
