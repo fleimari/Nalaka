@@ -1,5 +1,6 @@
 package com.example.nalaka;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -22,7 +23,7 @@ import android.widget.PopupMenu;
 import android.widget.Toast;
 
 
-public class Arvostelusivu extends AppCompatActivity implements Vier.OnClickListener {
+public class Arvostelusivu extends AppCompatActivity implements View.OnClickListener {
 
     VideoView videoPlayer;
     ImageView imageViewer;
@@ -43,11 +44,9 @@ public class Arvostelusivu extends AppCompatActivity implements Vier.OnClickList
         findViewById(R.id.logo_btn).setOnClickListener(this);
         findViewById(R.id.menu_img_btn).setOnClickListener(this);
 
-        
 
-
-        arvostelutiedot = (ArvosteluClass) getIntent().getSerializableExtra("Arvostelu");
-        kuvaURL = arvostelutiedot.getKuvaUrl();
+        //arvostelutiedot = (ArvosteluClass) getIntent().getSerializableExtra("Arvostelu");
+        //kuvaURL = arvostelutiedot.getKuvaUrl();
 
 
         String videoUrl = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/VolkswagenGTIReview.mp4";
