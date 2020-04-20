@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+    <ImageView
+        android:id="@+id/listIMG"
+        android:layout_width="230dp"
+        android:layout_height="150dp"
+        android:layout_gravity="center"
+        android:layout_below="@id/title"
+        android:src="@drawable/pizzaimg" />
+
+    <ImageView
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:foregroundGravity="center"
+        android:id="@+id/profileIMG"
+        android:layout_toRightOf="@id/listIMG"
+        android:layout_below="@id/title"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/spongebob"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/title"
+        android:text="Arvostelun otsikko"
+        android:gravity="center"
+        android:textSize="20dp"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/arvosteluteksti"
+        android:layout_below="@id/starRating"
+        android:layout_marginTop="1dp"
+        android:padding="10dp"
+        android:textSize="18dp"
+        android:text="very good pizza thank you"/>
+
+    <RatingBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        style="?android:attr/ratingBarStyleSmall"
+        android:id="@+id/starRating"
+        android:layout_below="@id/listIMG"/>
+
+
+
+
+</RelativeLayout>

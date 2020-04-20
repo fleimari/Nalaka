@@ -7,12 +7,14 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.InputType;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+
 import android.widget.MediaController;
 import android.widget.RatingBar;
 import android.widget.Spinner;
@@ -28,6 +30,11 @@ import com.android.volley.toolbox.Volley;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.widget.PopupMenu;
+import android.widget.Spinner;
+import android.widget.Toast;
+
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -94,6 +101,7 @@ public class luoArvostelu extends AppCompatActivity implements View.OnClickListe
          spinnerRavintola = (Spinner) findViewById(R.id.spinnerRavintola);
          spinnerTags = (Spinner) findViewById(R.id.spinnerTags);
 
+
          spinnerKaupunki.setAdapter(kaupunkiAdapter);
          spinnerRavintola.setAdapter(ravintolaAdapter);
          spinnerTags.setAdapter(tagiAdapter);
@@ -144,6 +152,25 @@ public class luoArvostelu extends AppCompatActivity implements View.OnClickListe
     }
     public void toast(String message){
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+
+        adapterKaupungit = ArrayAdapter.createFromResource(this, R.array.kaupungit, android.R.layout.simple_spinner_item);
+        adapterKaupungit.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerKaupunki.setAdapter(adapterKaupungit);
+
+        adapterRavintolat = ArrayAdapter.createFromResource(this,  R.array.ravintolat, android.R.layout.simple_spinner_item);
+        adapterRavintolat.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerRavintola.setAdapter(adapterRavintolat);
+
+        adapterTags = ArrayAdapter.createFromResource(this,  R.array.tags, android.R.layout.simple_spinner_item);
+        adapterTags.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerTags.setAdapter(adapterTags);
+
+        findViewById(R.id.button2).setOnClickListener(this);
+        findViewById(R.id.search_img_btn).setOnClickListener(this);
+        findViewById(R.id.logo_btn).setOnClickListener(this);
+        findViewById(R.id.menu_img_btn).setOnClickListener(this);
+
+
     }
 
     @Override
@@ -184,6 +211,41 @@ public class luoArvostelu extends AppCompatActivity implements View.OnClickListe
                 Toast.makeText(this, "Annoksen nimi puuttuu", Toast.LENGTH_SHORT).show();
             }
         }
+
+
+        if (v.getId() == R.id.search_img_btn) {
+            Intent intentHakuActivity = new Intent(this, HakuActivity.class);
+            startActivity(intentHakuActivity);
+        }
+        if (v.getId() == R.id.logo_btn){
+            Intent intentPaasivu = new Intent (this, Paasivu.class);
+            startActivity(intentPaasivu);
+        }
+        if (v.getId() == R.id.menu_img_btn) {
+            PopupMenu popup = new PopupMenu(luoArvostelu.this, findViewById(R.id.menu_img_btn));
+            popup.getMenuInflater().inflate(R.menu.menu, popup.getMenu());
+            popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                public boolean onMenuItemClick(MenuItem item) {
+                    switch(item.getItemId()) {
+                        case R.id.three:
+                            Toast.makeText(luoArvostelu.this, "Farewell", Toast.LENGTH_SHORT).show();
+                            finish();
+                            return true;
+                        case R.id.two:
+                            Toast.makeText(luoArvostelu.this, "Nothing here sorry", Toast.LENGTH_LONG).show();
+                            return true;
+                        case R.id.one:
+                            Intent intentPaasivu = new Intent (luoArvostelu.this, Paasivu.class);
+                            startActivity(intentPaasivu);
+                            Toast.makeText(luoArvostelu.this, "Pääsivu", Toast.LENGTH_SHORT).show();
+                            return true;
+                    }
+                    return false;
+                }
+            });
+            popup.show();
+        }
+
     }
 
     @Override

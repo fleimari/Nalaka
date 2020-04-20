@@ -2,13 +2,35 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/paasivu"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Paasivu">
 
-    <TextView
+    <include layout="@layout/custom_toolbar"
+        android:id="@+id/app_bar"/>
+
+
+    <ListView
+        android:id="@+id/listViewPaasivu"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="PAASIVU"/>
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/luoArvostelu"
+        app:layout_constraintTop_toBottomOf="@id/app_bar"
+        android:scrollbars="vertical"
+        app:layout_constrainedHeight="true"/>
+
+    <Button
+        android:id="@+id/luoArvostelu"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:text="Arvostele annos"
+        android:background="@drawable/button"
+        style="@style/button_text"
+        android:layout_margin="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:onClick="goToLuoArvostelu"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
