@@ -1,64 +1,109 @@
 package com.example.nalaka;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Bundle;
+
+import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.MediaController;
+import android.widget.VideoView;
+
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
-import android.os.Bundle;
+import java.io.InputStream;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
-import com.google.android.youtube.player.YouTubeBaseActivity;
-import com.google.android.youtube.player.YouTubeInitializationResult;
-import com.google.android.youtube.player.YouTubePlayer;
-import com.google.android.youtube.player.YouTubePlayerView;
 
-public class Arvostelusivu extends YouTubeBaseActivity implements View.OnClickListener {
+public class Arvostelusivu extends AppCompatActivity implements Vier.OnClickListener {
 
-    YouTubePlayerView tubePlayerView;
-    Button button;
-    YouTubePlayer.OnInitializedListener initializedListener;
+    VideoView videoPlayer;
+    ImageView imageViewer;
+    int i = 0;
+    ArvosteluClass arvostelutiedot;
+    String kuvaURL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_arvostelusivu);
 
+
+        videoPlayer = (VideoView) findViewById(R.id.videoView);
+        imageViewer = (ImageView) findViewById(R.id.imageView);
+        
         findViewById(R.id.search_img_btn).setOnClickListener(this);
         findViewById(R.id.logo_btn).setOnClickListener(this);
         findViewById(R.id.menu_img_btn).setOnClickListener(this);
 
-        button = (Button) findViewById(R.id.playButton);
-        tubePlayerView = (YouTubePlayerView) findViewById(R.id.youtubePlay);
+        
 
-        initializedListener = new YouTubePlayer.OnInitializedListener() {
-            @Override
-            public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
-                youTubePlayer.loadVideo("xc1RCqidtTg");
-                //youTubePlayer.loadVideo("e6d72ac2-d36b-4c58-b64b-761f78f189bc");
 
-            }
+        arvostelutiedot = (ArvosteluClass) getIntent().getSerializableExtra("Arvostelu");
+        kuvaURL = arvostelutiedot.getKuvaUrl();
 
-            @Override
-            public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
 
-            }
-        };
+        String videoUrl = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/VolkswagenGTIReview.mp4";
+        //String videoUrl = "https://firebasestorage.googleapis.com/v0/b/eighth-anvil-272013.appspot.com/o/testi.mp4?alt=media&token=c8e085b3-30ff-4c75-8dd2-cb33e2ea5eb1";
 
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                tubePlayerView.initialize(TubeConfig.getApiKey(), initializedListener);
-            }
-        });
+        Uri viUri = Uri.parse(videoUrl);
+        videoPlayer.setVideoURI(viUri);
+
+        MediaController mediaController = new MediaController(this);
+        videoPlayer.setMediaController(mediaController);
+        mediaController.setAnchorView(videoPlayer);
+
+        new DownloadImageTask(imageViewer)
+                .execute("https://www.worldatlas.com/r/w728-h425-c728x425/upload/06/06/04/shutterstock-591122330.jpg");
+                //.execute("https://firebasestorage.googleapis.com/v0/b/eighth-anvil-272013.appspot.com/o/It%27s%20me.png?alt=media&token=bb1db93d-2007-4bcc-8fe0-66b8f4d271c0");
 
     }
 
-    public void goToLuoArvostelu(View view){
-        Intent intent = new Intent(this, luoArvostelu.class);
-        startActivity(intent);
+    class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+
+        public DownloadImageTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urlImage = urls[0];
+            Bitmap picImage = null;
+            try {
+                InputStream in = new java.net.URL(urlImage).openStream();
+                picImage = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error to load image", e.getMessage());
+                e.printStackTrace();
+            }
+            return picImage;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setImageBitmap(result);
+        }
+    }
+
+    public void changeView(View v) {
+        i++;
+        if (i == 1) {
+            videoPlayer.setVisibility(View.VISIBLE);
+            imageViewer.setVisibility(View.INVISIBLE);
+        }
+
+        if (i == 2) {
+            i = 0;
+            videoPlayer.setVisibility(View.INVISIBLE);
+            imageViewer.setVisibility(View.VISIBLE);
+        }
+
     }
 
     @Override
@@ -96,5 +141,7 @@ public class Arvostelusivu extends YouTubeBaseActivity implements View.OnClickLi
             popup.show();
         }
     }
+
 }
+
 

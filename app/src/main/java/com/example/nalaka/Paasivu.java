@@ -9,15 +9,9 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.Toast;
-
-import com.google.android.youtube.player.YouTubeBaseActivity;
-import com.google.android.youtube.player.YouTubeInitializationResult;
-import com.google.android.youtube.player.YouTubePlayer;
-import com.google.android.youtube.player.YouTubePlayerView;
 
 import java.util.ArrayList;
 
@@ -73,7 +67,7 @@ public class Paasivu extends AppCompatActivity implements AdapterView.OnItemClic
         //Log.d("testiPaa", "onItemClick: " + arvostelutLista.get(position).getOtsikko());
 
         Intent intent = new Intent(this, Arvostelusivu.class);
-        intent.putExtra("AlueetClass",arvostelutLista.get(position));
+        intent.putExtra("Arvostelu",arvostelutLista.get(position));
         startActivity(intent);
     }
 
