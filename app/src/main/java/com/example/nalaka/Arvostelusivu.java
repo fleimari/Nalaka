@@ -43,15 +43,8 @@ public class Arvostelusivu extends AppCompatActivity {
 
         new DownloadImageTask(imageViewer)
                 .execute("https://www.worldatlas.com/r/w728-h425-c728x425/upload/06/06/04/shutterstock-591122330.jpg");
-        //.execute("https://firebasestorage.googleapis.com/v0/b/eighth-anvil-272013.appspot.com/o/It%27s%20me.png?alt=media&token=bb1db93d-2007-4bcc-8fe0-66b8f4d271c0");
-
-    }
-
-    public void getImage(View v){
-
-        new DownloadImageTask(imageViewer)
-                .execute("https://www.worldatlas.com/r/w728-h425-c728x425/upload/06/06/04/shutterstock-591122330.jpg");
                 //.execute("https://firebasestorage.googleapis.com/v0/b/eighth-anvil-272013.appspot.com/o/It%27s%20me.png?alt=media&token=bb1db93d-2007-4bcc-8fe0-66b8f4d271c0");
+
     }
 
     class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
