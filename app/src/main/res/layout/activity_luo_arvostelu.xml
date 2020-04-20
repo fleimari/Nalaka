@@ -20,6 +20,7 @@
         android:layout_marginRight="16dp"
         android:onClick="valitseGalleria"
         android:text="Valitse tiedosto galleriasta"
+        android:background="@drawable/button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/annosKuva"
         app:layout_constraintTop_toBottomOf="@+id/buttonLisaaVideo" />
@@ -53,6 +54,7 @@
         android:layout_marginRight="16dp"
         android:onClick="otaKuva"
         android:text="Ota kuva"
+        android:background="@drawable/button"
         app:layout_constraintEnd_toStartOf="@+id/buttonLisaaVideo"
         app:layout_constraintStart_toEndOf="@+id/annosKuva"
         app:layout_constraintTop_toBottomOf="@+id/annoksenNimi" />
@@ -66,6 +68,7 @@
         android:layout_marginRight="16dp"
         android:onClick="otaVideo"
         android:text="Ota video"
+        android:background="@drawable/button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/annoksenNimi" />
 
@@ -110,6 +113,7 @@
         android:layout_marginRight="16dp"
         android:layout_marginBottom="16dp"
         android:text="Julkaise arvostelu"
+        android:background="@drawable/button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/ratingBar" />
