@@ -3,6 +3,7 @@ package com.example.nalaka;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.InputType;
@@ -12,9 +13,11 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.MediaController;
 import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -37,11 +40,14 @@ import java.util.ArrayList;
 
 public class luoArvostelu extends AppCompatActivity implements View.OnClickListener {
 
-    Button btnKamera;
-    ImageView ivAnnos;
+    Button btnKuva, btnVideo;
+    ImageView picAnnos;
+    VideoView vidAnnos;
     Spinner spinnerKaupunki, spinnerRavintola, spinnerTags;
     EditText otsikko,arvostelu;
     RatingBar tahdet;
+    private static final int GALLERY_PICTURE_REQUEST = 1;
+    private static final int GALLERY_VIDEO_REQUEST = 2;
     private DatabaseReference mDatabase;
     private FirebaseStorage storage; // kuvan liittämiseen jo valmiiksi reference
     ArrayList<String> kaupunkiList;
@@ -78,8 +84,11 @@ public class luoArvostelu extends AppCompatActivity implements View.OnClickListe
         //storage = FirebaseStorage.getInstance();
         //StorageReference storageRef = storage.getReference();
 
-         btnKamera = (Button) findViewById(R.id.buttonLisaaKuva);
-         ivAnnos = (ImageView) findViewById(R.id.annosKuva);
+         btnKuva = (Button) findViewById(R.id.buttonKuva);
+         btnVideo = (Button) findViewById(R.id.buttonVideo);
+         picAnnos = (ImageView) findViewById(R.id.annosKuva);
+         vidAnnos = (VideoView) findViewById(R.id.annosVideo);
+
          spinnerKaupunki = (Spinner) findViewById(R.id.spinnerKaupunki);
          spinnerRavintola = (Spinner) findViewById(R.id.spinnerRavintola);
          spinnerTags = (Spinner) findViewById(R.id.spinnerTags);
@@ -88,7 +97,7 @@ public class luoArvostelu extends AppCompatActivity implements View.OnClickListe
          spinnerRavintola.setAdapter(ravintolaAdapter);
          spinnerTags.setAdapter(tagiAdapter);
 
-        findViewById(R.id.button2).setOnClickListener(this);
+        findViewById(R.id.buttonJulkaiseArvostelu).setOnClickListener(this);
         haeKaupungit();
         haeTagit();
         haeRavintolat("Oulu");
@@ -134,7 +143,7 @@ public class luoArvostelu extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.button2){
+        if (v.getId() == R.id.buttonJulkaiseArvostelu){
             if(otsikko.length() != 0){
                 if(spinnerKaupunki.getSelectedItem().toString() != "Valitse"){
                     if(spinnerRavintola.getSelectedItem().toString() != "Valitse"){
@@ -173,22 +182,39 @@ public class luoArvostelu extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    protected void onActivityResult (int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-        ivAnnos.setImageBitmap(bitmap);
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == GALLERY_PICTURE_REQUEST && resultCode == RESULT_OK && data != null) {
+            Uri kuvaData = data.getData();
+            picAnnos.setImageURI(kuvaData);
+
+            picAnnos.setVisibility(View.VISIBLE);
+            vidAnnos.setVisibility(View.INVISIBLE);
+        }
+        if (requestCode == GALLERY_VIDEO_REQUEST && resultCode == RESULT_OK && data != null) {
+            Uri videoData = data.getData();
+            vidAnnos.setVideoURI(videoData);
+
+            vidAnnos.setVisibility(View.VISIBLE);
+            picAnnos.setVisibility(View.INVISIBLE);
+
+            MediaController mediaController = new MediaController(this);
+            vidAnnos.setMediaController(mediaController);
+            mediaController.setAnchorView(vidAnnos);
+
+        }
+
     }
 
-    public void otaKuva (View view){
-        Intent intentKuva = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(intentKuva, 0);
+    public void valitseKuva(View view){
+        Intent intentKuva = new Intent(Intent.ACTION_GET_CONTENT);
+        intentKuva.setType("image/*");
+        startActivityForResult(intentKuva.createChooser(intentKuva, "Valitse kuva"), GALLERY_PICTURE_REQUEST);
     }
 
-
-    public void valitseGalleria (View view){
-        Intent intentGalleria = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        intentGalleria.setType("image/* video/*");
-        startActivityForResult(intentGalleria, 0);
+    public void valitseVideo(View view){
+        Intent intentVideo = new Intent(Intent.ACTION_GET_CONTENT);
+        intentVideo.setType("video/*");
+        startActivityForResult(intentVideo.createChooser(intentVideo, "Valitse video"), GALLERY_VIDEO_REQUEST);
     }
 
     public void lisaaArvostelu(String kaupunki,String otsikko, String pisteet, String ravintola, String teksti, String tag){
