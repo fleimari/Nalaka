@@ -63,8 +63,10 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="16dp"
-                android:text="Pesäpallo on Lauri ”Tahko” Pihkalan kehittämä kahden joukkueen välinen mailapeli. Pelin tarkoituksena on lyödä juoksuja omilla sisävuoroilla ja estää ulkovuoroilla vastustajaa lyömästä juoksuja. Sisäpelaajat lyövät palloa vuorollaan, ja ulkopelaajat ovat ryhmittäytyneet kentälle. Yksi ulkopelaaja toimii syöttäjänä eli lukkarina. Joukkue saa juoksun, kun etenijä on kiertänyt kaikki kolme pesää ja palannut kotipesään. \n \n Pihkala kehitti pesäpallon 1910-luvulla amerikkalaisesta baseballista ja 1900-luvun alussa Suomessa pelatusta kuningaspallosta. Pesäpallosta alettiin nopeasti puhua Suomen kansallispelinä, ja se levisi 1920–1930-luvuilla kouluissa ja suojeluskunnissa. Se on säilyttänyt hyvin paikkansa Suomen kansallispelinä, ja se on Suomen kolmanneksi suosituin pallopeli. Sen pääsarja Suomessa on Superpesis. Lajia harrastetaan pienimuotoisesti myös joissain muissa maissa, kuten Ruotsissa ja Australiassa. Pesäpallon maailmancup on järjestetty yhdeksän kertaa, ja Suomi on voittanut joka kerta."/>
+                android:text="Play"
+                app:layout_constraintTop_toBottomOf="@+id/youtubePlay"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"/>
 
         </LinearLayout>
 
