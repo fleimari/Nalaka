@@ -12,6 +12,15 @@
         android:layout_below="@id/title"
         android:src="@drawable/pizzaimg" />
 
+    <VideoView
+        android:id="@+id/listVideo"
+        android:layout_width="230dp"
+        android:layout_height="150dp"
+        android:layout_gravity="center"
+        android:layout_below="@id/title"
+        android:src="@drawable/pizzaimg"
+        android:visibility="invisible"/>
+
     <ImageView
         android:layout_width="70dp"
         android:layout_height="70dp"
@@ -22,6 +31,7 @@
         android:layout_marginLeft="40dp"
         android:layout_marginTop="20dp"
         android:src="@drawable/spongebob"/>
+
 
     <TextView
         android:layout_width="match_parent"

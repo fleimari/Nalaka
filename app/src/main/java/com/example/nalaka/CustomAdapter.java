@@ -14,6 +14,11 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.VideoView;
+
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageRequest;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -66,7 +71,8 @@ public class CustomAdapter extends ArrayAdapter<ArvosteluClass> {
 
         TextView text = (TextView) vi.findViewById(R.id.arvosteluteksti);
         TextView title = vi.findViewById(R.id.title);
-        ImageView image = (ImageView) vi.findViewById(R.id.listIMG);
+        final ImageView image = (ImageView) vi.findViewById(R.id.listIMG);
+        VideoView video = (VideoView) vi.findViewById(R.id.listVideo);
 
         RatingBar stars = (RatingBar) vi.findViewById(R.id.starRating);
         stars.setRating(Float.parseFloat(currentArvostelu.getPisteet()));
@@ -75,34 +81,38 @@ public class CustomAdapter extends ArrayAdapter<ArvosteluClass> {
         title.setText(currentArvostelu.getOtsikko());
 
 
-        Log.d("testi2", "getView: " + currentArvostelu.getKuvaUrl());
-        new DownloadImageTask(image).execute(currentArvostelu.getKuvaUrl());
-        //image.setImageURI(currentArvostelu.getKuvaUrl());
+
+        Log.d("Testi2", "getView: " + currentArvostelu.getKuvaUrl());
+
+        if ( currentArvostelu.getKuvaUrl().isEmpty())
+        {
+            if (currentArvostelu.getViedoUrl().isEmpty())
+            {
+                image.setImageResource(R.drawable.pizzaimg);
+                vi.findViewById(R.id.listVideo);
+            }
+
+        }
+        else
+        {
+            ImageRequest imageRequest = new ImageRequest(currentArvostelu.getKuvaUrl(),
+                    new Response.Listener<Bitmap>() {
+                        @Override
+                        public void onResponse(Bitmap bitmap) {
+                            image.setImageBitmap(bitmap);
+                        }
+                    }, 0, 0, null,
+                    new Response.ErrorListener() {
+                        public void onErrorResponse(VolleyError error) {
+                            image.setImageResource(R.drawable.kebaba);
+                        }
+                    });
+            MySingleton.getInstance().addToRequestQueue(imageRequest);
+        }
 
 
         return vi;
     }
-    class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-        ImageView bmImage;
-
-        public DownloadImageTask(ImageView bmImage) {
-            this.bmImage = bmImage;
-        }
-
-        protected Bitmap doInBackground(String... urls) {
-            String urlImage = urls[0];
-            Bitmap picImage = null;
-            try {
-                InputStream in = new java.net.URL(urlImage).openStream();
-                picImage = BitmapFactory.decodeStream(in);
-            } catch (Exception e) {
-                Log.e("Error to load image", e.getMessage());
-                e.printStackTrace();
-            }
-            return picImage;
-        }
-    }
-
 
 }
 
