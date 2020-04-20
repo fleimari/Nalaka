@@ -1,34 +1,67 @@
 package com.example.nalaka;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.media.Image;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.InputType;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+
+import android.widget.MediaController;
+import android.widget.RatingBar;
+import android.widget.Spinner;
+import android.widget.Toast;
+import android.widget.VideoView;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.widget.PopupMenu;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 public class luoArvostelu extends AppCompatActivity implements View.OnClickListener {
 
-    Button btnKamera;
-    ImageView ivAnnos;
+    Button btnKuva, btnVideo;
+    ImageView picAnnos;
+    VideoView vidAnnos;
     Spinner spinnerKaupunki, spinnerRavintola, spinnerTags;
-    ArrayAdapter<CharSequence> adapterKaupungit, adapterRavintolat, adapterTags;
+    EditText otsikko,arvostelu;
+    RatingBar tahdet;
+    private static final int GALLERY_PICTURE_REQUEST = 1;
+    private static final int GALLERY_VIDEO_REQUEST = 2;
     private DatabaseReference mDatabase;
     private FirebaseStorage storage; // kuvan liittämiseen jo valmiiksi reference
+    ArrayList<String> kaupunkiList;
+    ArrayList<String> ravintolaList;
+    ArrayList<String> tagiList;
+    ArrayAdapter<String> kaupunkiAdapter,ravintolaAdapter,tagiAdapter;
+    RequestQueue queue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,16 +69,89 @@ public class luoArvostelu extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_luo_arvostelu);
 
         mDatabase = FirebaseDatabase.getInstance().getReference(); // Realtime tietokanta reference
+        kaupunkiList = new ArrayList<String>();
+        ravintolaList = new ArrayList<String>();
+        tagiList = new ArrayList<String>();
+        ravintolaList.add("Valitse");
 
-        // Storage tietokanta reference
+        kaupunkiAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,kaupunkiList);
+        kaupunkiAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        ravintolaAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,ravintolaList);
+        ravintolaAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        tagiAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,tagiList);
+        tagiAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        queue = Volley.newRequestQueue(this);
+
+        otsikko = findViewById(R.id.annoksenNimi);
+        arvostelu = findViewById(R.id.etArvosteluTxt);
+        tahdet = findViewById(R.id.ratingBar);
+        //Storage tietokanta reference
         //storage = FirebaseStorage.getInstance();
         //StorageReference storageRef = storage.getReference();
 
-         btnKamera = (Button) findViewById(R.id.buttonLisaaKuva);
-         ivAnnos = (ImageView) findViewById(R.id.annosKuva);
+         btnKuva = (Button) findViewById(R.id.buttonKuva);
+         btnVideo = (Button) findViewById(R.id.buttonVideo);
+         picAnnos = (ImageView) findViewById(R.id.annosKuva);
+         vidAnnos = (VideoView) findViewById(R.id.annosVideo);
+
          spinnerKaupunki = (Spinner) findViewById(R.id.spinnerKaupunki);
          spinnerRavintola = (Spinner) findViewById(R.id.spinnerRavintola);
          spinnerTags = (Spinner) findViewById(R.id.spinnerTags);
+
+
+         spinnerKaupunki.setAdapter(kaupunkiAdapter);
+         spinnerRavintola.setAdapter(ravintolaAdapter);
+         spinnerTags.setAdapter(tagiAdapter);
+
+        findViewById(R.id.buttonJulkaiseArvostelu).setOnClickListener(this);
+        haeKaupungit();
+        haeTagit();
+
+        spinnerKaupunki.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+                Object item = parent.getItemAtPosition(pos);
+                if(item.toString() == "Lisää kaupunki"){
+                        popUpKaupunki("Lisää kaupunki");
+                        haeRavintolat(item.toString());
+                }else {
+                    haeRavintolat(item.toString());
+                    spinnerRavintola.setSelection(0);
+                }
+            }
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+        spinnerRavintola.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+                Object item = parent.getItemAtPosition(pos);
+                if(item.toString() == "Lisää ravintola"){
+                    if(spinnerKaupunki.getSelectedItem().toString() != "Valitse" && spinnerKaupunki.getSelectedItem().toString()!="Lisää kaupunki"){
+                        popUpRavintola("Lisää ravintola");
+                    }else{
+                        toast("Valitse kaupunki");
+                    }
+
+                }
+            }
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+        spinnerTags.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+                Object item = parent.getItemAtPosition(pos);
+                if(item.toString() == "Lisää tagi"){
+                    popUpTagi("Lisää tagi");
+                }
+            }
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+    }
+    public void toast(String message){
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
 
         adapterKaupungit = ArrayAdapter.createFromResource(this, R.array.kaupungit, android.R.layout.simple_spinner_item);
         adapterKaupungit.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -64,14 +170,49 @@ public class luoArvostelu extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.logo_btn).setOnClickListener(this);
         findViewById(R.id.menu_img_btn).setOnClickListener(this);
 
-    }
 
+    }
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.button2){
-            lisaaArvostelu();
+        if (v.getId() == R.id.buttonJulkaiseArvostelu){
+            if(otsikko.length() != 0){
+                if(spinnerKaupunki.getSelectedItem().toString() != "Valitse"){
+                    if(spinnerRavintola.getSelectedItem().toString() != "Valitse"){
+                        if(spinnerTags.getSelectedItem().toString() != "Valitse"){
+                            if(arvostelu.length() != 0){
+                                String kaupunki = spinnerKaupunki.getSelectedItem().toString();
+                                String ravintola = spinnerRavintola.getSelectedItem().toString();
+                                String tag = spinnerTags.getSelectedItem().toString();
+                                String nimi = otsikko.getText().toString();
+                                String pisteet = Float.toString(tahdet.getRating());
+                                String pohdinta = arvostelu.getText().toString();
+                                lisaaArvostelu(kaupunki,nimi,pisteet,ravintola,pohdinta,tag);
+                                Toast.makeText(this, "Arvostelu lisätty", Toast.LENGTH_SHORT).show();
+                                otsikko.setText("");
+                                arvostelu.setText("");
+                                tahdet.setRating(0);
+                                spinnerTags.setSelection(0);
+                                spinnerRavintola.setSelection(0);
+                                spinnerKaupunki.setSelection(0);
+                            }else{
+                                Toast.makeText(this, "Arvostelun teksti puuttuu", Toast.LENGTH_SHORT).show();
+                            }
+                        }else{
+                            Toast.makeText(this, "Tagia ei valittu", Toast.LENGTH_SHORT).show();
+                        }
+                    }else {
+                        Toast.makeText(this, "Ravintolaa ei valittu", Toast.LENGTH_SHORT).show();
+                    }
+                }else{
+                    Toast.makeText(this, "Kaupunkia ei valittu", Toast.LENGTH_SHORT).show();
+                }
+            }else{
+                Toast.makeText(this, "Annoksen nimi puuttuu", Toast.LENGTH_SHORT).show();
+            }
         }
+
+
         if (v.getId() == R.id.search_img_btn) {
             Intent intentHakuActivity = new Intent(this, HakuActivity.class);
             startActivity(intentHakuActivity);
@@ -108,40 +249,46 @@ public class luoArvostelu extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    protected void onActivityResult (int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-        ivAnnos.setImageBitmap(bitmap);
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == GALLERY_PICTURE_REQUEST && resultCode == RESULT_OK && data != null) {
+            Uri kuvaData = data.getData();
+            picAnnos.setImageURI(kuvaData);
+
+            picAnnos.setVisibility(View.VISIBLE);
+            vidAnnos.setVisibility(View.INVISIBLE);
+        }
+        if (requestCode == GALLERY_VIDEO_REQUEST && resultCode == RESULT_OK && data != null) {
+            Uri videoData = data.getData();
+            vidAnnos.setVideoURI(videoData);
+
+            vidAnnos.setVisibility(View.VISIBLE);
+            picAnnos.setVisibility(View.INVISIBLE);
+
+            MediaController mediaController = new MediaController(this);
+            vidAnnos.setMediaController(mediaController);
+            mediaController.setAnchorView(vidAnnos);
+
+        }
+
     }
 
-    public void otaKuva (View view){
-        Intent intentKuva = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(intentKuva, 0);
+    public void valitseKuva(View view){
+        Intent intentKuva = new Intent(Intent.ACTION_GET_CONTENT);
+        intentKuva.setType("image/*");
+        startActivityForResult(intentKuva.createChooser(intentKuva, "Valitse kuva"), GALLERY_PICTURE_REQUEST);
     }
 
-    public void otaVideo (View view){
-        Intent intentVideo = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
-        startActivityForResult(intentVideo, 0);
+    public void valitseVideo(View view){
+        Intent intentVideo = new Intent(Intent.ACTION_GET_CONTENT);
+        intentVideo.setType("video/*");
+        startActivityForResult(intentVideo.createChooser(intentVideo, "Valitse video"), GALLERY_VIDEO_REQUEST);
     }
 
-    public void valitseGalleria (View view){
-        Intent intentGalleria = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        intentGalleria.setType("image/* video/*");
-        startActivityForResult(intentGalleria, 0);
-    }
+    public void lisaaArvostelu(String kaupunki,String otsikko, String pisteet, String ravintola, String teksti, String tag){
 
-
-    public void lisaaArvostelu(){
-
-        // Siinä on nyt asetettu arvot mutta eihän se ole kuin lukea nuista kentistä ja korvata arvot niillä
         String var = mDatabase.push().getKey();
-        String kaupunki = "Tampere";
         String kuvaUrl = "https://img.devrant.com/devrant/rant/r_1973724_9QTSY.jpg";
-        String otsikko = "Da best";
-        String peukut = "19";
-        String pisteet = "5";
-        String ravintola = "Tampereen kepappila";
-        String teksti = "Hjuva paikka tulla sina kaumaan";
+        String peukut = "0";
         String user = "Pekka";
         String videoUrl = "https://www.youtube.com/watch?v=iL7nX9W3aOU";
 
@@ -154,32 +301,193 @@ public class luoArvostelu extends AppCompatActivity implements View.OnClickListe
         mDatabase.child("Arvostelut").child(var).child("Teksti").setValue(teksti);
         mDatabase.child("Arvostelut").child(var).child("User").setValue(user);
         mDatabase.child("Arvostelut").child(var).child("VideoUrl").setValue(videoUrl);
-
-        // Tähän pitää varmaan rakentaa joku for-looppi että osaa tehdä sen verran komentoja kuin halutaan lisätä tageja.
-        String tag1 = "Kiinalainen";
-        String tag2 = "Japanilainen";
-        mDatabase.child("Arvostelut").child(var).child("Tags").push().setValue(tag1);
-        mDatabase.child("Arvostelut").child(var).child("Tags").push().setValue(tag2);
+        mDatabase.child("Arvostelut").child(var).child("Tags").push().setValue(tag);
     }
 
-    public void lisaaTagi(){
-
-        // Yksi rivi lisää aina yhden tagin Tags-tauluun
-        mDatabase.child("Tags").push().setValue("Piksa");
-        //mDatabase.child("Tags").push().setValue("Kepapo");
-        //mDatabase.child("Tags").push().setValue("Italialainen");
-        //mDatabase.child("Tags").push().setValue("Grillimättö");
-        //mDatabase.child("Tags").push().setValue("Kiinalainen");
+    public void lisaaTagi(String tagi){
+        mDatabase.child("Tags").push().setValue(tagi);
+        toast("Tagi lisätty");
+        haeTagit();
     }
 
-    public void lisaaKaupunki(){
-
-        String kaupunki = "Muhos";
-        String ravintola = "Muhoksen piksaKepapo";
-
+    public void lisaaKaupunki(String kaupunki){
+        mDatabase.child("Kaupungit").child(kaupunki).push().setValue("Hesburger");
+        toast("Kaupunki lisätty");
+        haeKaupungit();
+    }
+    public void lisaaRavintola(String kaupunki, String ravintola){
         mDatabase.child("Kaupungit").child(kaupunki).push().setValue(ravintola);
+        toast("Ravintola lisätty");
+        haeRavintolat(spinnerKaupunki.getSelectedItem().toString());
+    }
+
+    public void haeKaupungit(){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                kaupunkiList.clear();
+                kaupunkiList.add("Valitse");
+                String url = "https://eighth-anvil-272013.firebaseio.com/Kaupungit.json?print=pretty";
+                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                        (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                try {
+                                    JSONArray list = response.names();
+                                    for(int i = 0; i<response.length();i++){
+                                        kaupunkiList.add(list.get(i).toString());
+                                    }
+                                    kaupunkiList.add("Lisää kaupunki");
+                                    kaupunkiAdapter.notifyDataSetChanged();
+                                }catch (Exception e){}
+                            }
+                        }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                            }
+                        });
+                queue.add(jsonObjectRequest);
+            }
+        });
 
     }
 
+    public void haeRavintolat(final String kaupunki){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ravintolaList.clear();
+                ravintolaList.add("Valitse");
+                String url = "https://eighth-anvil-272013.firebaseio.com/Kaupungit.json?print=pretty";
+                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                        (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                try{
+                                    JSONObject arr = response.getJSONObject(kaupunki);
+                                    JSONArray testlist = arr.names();
+                                    for(int i =0;i<testlist.length();i++){
+                                        String ravintola = arr.getString(testlist.getString(i).toString());
+                                        ravintolaList.add(ravintola);
+                                    }
+                                    ravintolaList.add("Lisää ravintola");
+                                    kaupunkiAdapter.notifyDataSetChanged();
 
+                                }catch (Exception e){}
+                            }
+                        }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                            }
+                        });
+
+                queue.add(jsonObjectRequest);
+            }
+        });
+    }
+
+    public void haeTagit(){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                tagiList.add("Valitse");
+                String url = "https://eighth-anvil-272013.firebaseio.com/Tags.json?print=pretty";
+                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                        (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                try {
+                                    //JSONObject arr = response.getJSONObject("Tags");
+                                    JSONArray testlist = response.names();
+                                    for(int i =0;i<testlist.length();i++){
+                                        String testi = response.getString(testlist.getString(i).toString());
+                                        tagiList.add(testi);
+                                    }
+                                    tagiList.add("Lisää tagi");
+                                    tagiAdapter.notifyDataSetChanged();
+                                }catch (Exception e){}
+                            }
+                        }, new Response.ErrorListener() {
+
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                            }
+                        });
+                queue.add(jsonObjectRequest);
+        }
+        });
+    }
+
+    public void popUpKaupunki(String otsikko){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(otsikko);
+        final EditText input = new EditText(this);
+        input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_CLASS_TEXT);
+        builder.setView(input);
+
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String newKaupunki = input.getText().toString();
+                lisaaKaupunki(newKaupunki);
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        builder.show();
+
+    }
+    public void popUpRavintola(String otsikko){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(otsikko);
+
+        final EditText input = new EditText(this);
+        input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_CLASS_TEXT);
+        builder.setView(input);
+
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String newRavintola = input.getText().toString();
+                lisaaRavintola(spinnerKaupunki.getSelectedItem().toString(),newRavintola);
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        builder.show();
+
+    }
+
+    public void popUpTagi(String otsikko){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(otsikko);
+
+        final EditText input = new EditText(this);
+        input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_CLASS_TEXT);
+        builder.setView(input);
+
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String newTag = input.getText().toString();
+                lisaaTagi(newTag);
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        builder.show();
+
+    }
 }

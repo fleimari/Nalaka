@@ -10,20 +10,22 @@
         android:id="@+id/app_bar"/>
 
     <Button
-        android:id="@+id/buttonGalleria"
+        android:id="@+id/buttonVideo"
+        android:onClick="valitseVideo"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="48dp"
         android:layout_marginLeft="48dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
-        android:onClick="valitseGalleria"
-        android:text="Valitse tiedosto galleriasta"
-        android:background="@drawable/button"
+
+        android:text="Valitse video"
+
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/annosKuva"
-        app:layout_constraintTop_toBottomOf="@+id/buttonLisaaVideo" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonKuva" />
 
     <EditText
         android:id="@+id/annoksenNimi"
@@ -41,36 +43,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/app_bar" />
-
-
-    <Button
-        android:id="@+id/buttonLisaaKuva"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
-        android:layout_marginLeft="48dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:onClick="otaKuva"
-        android:text="Ota kuva"
-        android:background="@drawable/button"
-        app:layout_constraintEnd_toStartOf="@+id/buttonLisaaVideo"
-        app:layout_constraintStart_toEndOf="@+id/annosKuva"
-        app:layout_constraintTop_toBottomOf="@+id/annoksenNimi" />
-
-    <Button
-        android:id="@+id/buttonLisaaVideo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:onClick="otaVideo"
-        android:text="Ota video"
-        android:background="@drawable/button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/annoksenNimi" />
 
     <EditText
         android:id="@+id/etArvosteluTxt"
@@ -104,7 +76,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/buttonJulkaiseArvostelu"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -120,6 +92,19 @@
 
     <ImageView
         android:id="@+id/annosKuva"
+        android:visibility="invisible"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="32dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/annoksenNimi"
+        app:srcCompat="@android:drawable/ic_menu_camera" />
+
+    <VideoView
+        android:id="@+id/annosVideo"
+        android:visibility="invisible"
         android:layout_width="130dp"
         android:layout_height="130dp"
         android:layout_marginStart="16dp"
@@ -139,7 +124,7 @@
         app:layout_constraintEnd_toStartOf="@+id/spinnerRavintola"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonGalleria" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonVideo" />
 
     <Spinner
         android:id="@+id/spinnerRavintola"
@@ -153,7 +138,7 @@
         app:layout_constraintEnd_toStartOf="@+id/spinnerTags"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/spinnerKaupunki"
-        app:layout_constraintTop_toBottomOf="@+id/buttonGalleria" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonVideo" />
 
     <Spinner
         android:id="@+id/spinnerTags"
@@ -165,6 +150,22 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/spinnerRavintola"
-        app:layout_constraintTop_toBottomOf="@+id/buttonGalleria" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonVideo" />
+
+    <Button
+        android:id="@+id/buttonKuva"
+        android:onClick="valitseKuva"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:layout_marginLeft="48dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:text="Valitse Kuva"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.676"
+        app:layout_constraintStart_toEndOf="@+id/annosKuva"
+        app:layout_constraintTop_toBottomOf="@+id/annoksenNimi" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
