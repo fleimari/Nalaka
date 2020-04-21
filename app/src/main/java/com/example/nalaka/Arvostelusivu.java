@@ -6,30 +6,35 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.MediaController;
+import android.widget.PopupMenu;
+import android.widget.RatingBar;
+import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.VideoView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.InputStream;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.PopupMenu;
-import android.widget.Toast;
 
 
 public class Arvostelusivu extends AppCompatActivity implements View.OnClickListener {
 
+    ArvosteluClass arvostelutiedot;
+    String otsikko;
+    String arvosteluteksti;
+    String tahdet;
+    String kuvaURL;
+    String videoURL;
+
     VideoView videoPlayer;
     ImageView imageViewer;
     int i = 0;
-    ArvosteluClass arvostelutiedot;
-    String kuvaURL;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,17 +44,32 @@ public class Arvostelusivu extends AppCompatActivity implements View.OnClickList
 
         videoPlayer = (VideoView) findViewById(R.id.videoView);
         imageViewer = (ImageView) findViewById(R.id.imageView);
+        TextView textOtsikko = findViewById(R.id.textViewOtsikko);
+        TextView textArvostelu = findViewById(R.id.textViewArvostelu);
+        RatingBar arvostelutahdet = findViewById(R.id.ratingBar);
         
         findViewById(R.id.search_img_btn).setOnClickListener(this);
         findViewById(R.id.logo_btn).setOnClickListener(this);
         findViewById(R.id.menu_img_btn).setOnClickListener(this);
 
+        arvostelutiedot = (ArvosteluClass) getIntent().getSerializableExtra("Arvostelu");
+        otsikko = arvostelutiedot.getOtsikko();
+        arvosteluteksti = arvostelutiedot.getArvosteluTeksti();
+        tahdet = arvostelutiedot.getPisteet();
+        kuvaURL = arvostelutiedot.getKuvaUrl();
+        videoURL = arvostelutiedot.getViedoUrl();
 
-        //arvostelutiedot = (ArvosteluClass) getIntent().getSerializableExtra("Arvostelu");
-        //kuvaURL = arvostelutiedot.getKuvaUrl();
+        textOtsikko.setText(otsikko);
+        textArvostelu.setText(arvosteluteksti);
+        arvostelutahdet.setRating(Integer.parseInt(tahdet));
+        imageViewer.setVisibility(View.INVISIBLE);
+        videoPlayer.setVisibility(View.INVISIBLE);
 
+        choosePlayer();
 
-        String videoUrl = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/VolkswagenGTIReview.mp4";
+        /*
+        String videoUrl = videoURL;
+        //String videoUrl = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/VolkswagenGTIReview.mp4";
         //String videoUrl = "https://firebasestorage.googleapis.com/v0/b/eighth-anvil-272013.appspot.com/o/testi.mp4?alt=media&token=c8e085b3-30ff-4c75-8dd2-cb33e2ea5eb1";
 
         Uri viUri = Uri.parse(videoUrl);
@@ -60,8 +80,10 @@ public class Arvostelusivu extends AppCompatActivity implements View.OnClickList
         mediaController.setAnchorView(videoPlayer);
 
         new DownloadImageTask(imageViewer)
-                .execute("https://www.worldatlas.com/r/w728-h425-c728x425/upload/06/06/04/shutterstock-591122330.jpg");
+                .execute(kuvaURL);
+                //.execute("https://www.worldatlas.com/r/w728-h425-c728x425/upload/06/06/04/shutterstock-591122330.jpg");
                 //.execute("https://firebasestorage.googleapis.com/v0/b/eighth-anvil-272013.appspot.com/o/It%27s%20me.png?alt=media&token=bb1db93d-2007-4bcc-8fe0-66b8f4d271c0");
+        */
 
     }
 
@@ -90,7 +112,30 @@ public class Arvostelusivu extends AppCompatActivity implements View.OnClickList
         }
     }
 
-    public void changeView(View v) {
+    public void choosePlayer() {
+
+        if (kuvaURL != null && !kuvaURL.isEmpty()) {
+            new DownloadImageTask(imageViewer)
+                    .execute(kuvaURL);
+            imageViewer.setVisibility(View.VISIBLE);
+
+        }
+        else if (videoURL != null && !videoURL.isEmpty()) {
+            String videoUrl = videoURL;
+            Uri viUri = Uri.parse(videoUrl);
+            videoPlayer.setVideoURI(viUri);
+
+            MediaController mediaController = new MediaController(this);
+            videoPlayer.setMediaController(mediaController);
+            mediaController.setAnchorView(videoPlayer);
+
+            videoPlayer.setVisibility(View.VISIBLE);
+        }
+
+    }
+
+
+    /*public void changeView(View v) {
         i++;
         if (i == 1) {
             videoPlayer.setVisibility(View.VISIBLE);
@@ -103,7 +148,7 @@ public class Arvostelusivu extends AppCompatActivity implements View.OnClickList
             imageViewer.setVisibility(View.VISIBLE);
         }
 
-    }
+    }*/
 
     @Override
     public void onClick(View v) {

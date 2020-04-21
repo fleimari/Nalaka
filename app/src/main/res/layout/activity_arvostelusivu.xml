@@ -10,42 +10,43 @@
     <include layout="@layout/custom_toolbar"
         android:id="@+id/app_bar"/>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textViewOtsikko"
+        app:layout_constraintTop_toBottomOf="@+id/app_bar"
+        android:text="Otsikko"
+        android:gravity="center"
+        android:textSize="16dp"/>
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/app_bar"
+        app:layout_constraintTop_toBottomOf="@id/textViewOtsikko"
         android:id="@+id/videoFrame">
 
         <VideoView
             android:id="@+id/videoView"
             android:layout_width="match_parent"
-            android:layout_height="240dp" />
+            android:layout_height="240dp"
+            android:layout_gravity="center_horizontal"/>
 
     </FrameLayout>
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="240dp"
-        app:layout_constraintTop_toBottomOf="@id/app_bar"
-        android:background="@color/colorPrimaryDark"
+        app:layout_constraintTop_toBottomOf="@id/textViewOtsikko"
         android:id="@+id/imageView"/>
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:text="change view"
-        android:id="@+id/imageButton"
-        android:onClick="changeView"/>
-
 
     <RatingBar
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:numStars="5"
-        android:rating="3"
         app:layout_constraintTop_toBottomOf="@id/imageView"
-        android:id="@+id/ratingBar"/>
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:id="@+id/ratingBar"
+        android:layout_marginTop="10dp"/>
 
     <ScrollView
         android:id="@+id/listViewArvostelusivu"
@@ -53,7 +54,7 @@
         android:layout_height="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/imageButton"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/ratingBar">
 
         <LinearLayout
@@ -63,14 +64,13 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:id="@+id/textViewArvostelu"
                 android:textSize="16dp"
                 android:text="Pesäpallo on Lauri ”Tahko” Pihkalan kehittämä kahden joukkueen välinen mailapeli. Pelin tarkoituksena on lyödä juoksuja omilla sisävuoroilla ja estää ulkovuoroilla vastustajaa lyömästä juoksuja. Sisäpelaajat lyövät palloa vuorollaan, ja ulkopelaajat ovat ryhmittäytyneet kentälle. Yksi ulkopelaaja toimii syöttäjänä eli lukkarina. Joukkue saa juoksun, kun etenijä on kiertänyt kaikki kolme pesää ja palannut kotipesään. \n \n Pihkala kehitti pesäpallon 1910-luvulla amerikkalaisesta baseballista ja 1900-luvun alussa Suomessa pelatusta kuningaspallosta. Pesäpallosta alettiin nopeasti puhua Suomen kansallispelinä, ja se levisi 1920–1930-luvuilla kouluissa ja suojeluskunnissa. Se on säilyttänyt hyvin paikkansa Suomen kansallispelinä, ja se on Suomen kolmanneksi suosituin pallopeli. Sen pääsarja Suomessa on Superpesis. Lajia harrastetaan pienimuotoisesti myös joissain muissa maissa, kuten Ruotsissa ja Australiassa. Pesäpallon maailmancup on järjestetty yhdeksän kertaa, ja Suomi on voittanut joka kerta."/>
 
         </LinearLayout>
 
     </ScrollView>
-
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
