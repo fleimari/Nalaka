@@ -47,6 +47,9 @@ import java.util.ArrayList;
 
 public class luoArvostelu extends AppCompatActivity implements View.OnClickListener {
 
+
+    //Korjauskommentti
+
     Button btnKuva, btnVideo;
     ImageView picAnnos;
     VideoView vidAnnos;
