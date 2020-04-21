@@ -12,16 +12,36 @@
         android:layout_below="@id/title"
         android:src="@drawable/pizzaimg" />
 
-    <ImageView
-        android:layout_width="70dp"
-        android:layout_height="70dp"
+    <VideoView
+        android:id="@+id/listVideo"
+        android:layout_width="230dp"
+        android:layout_height="150dp"
+        android:layout_gravity="center"
+        android:layout_below="@id/title"
+        android:src="@drawable/pizzaimg"
+        android:visibility="invisible"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:foregroundGravity="center"
-        android:id="@+id/profileIMG"
+        android:id="@+id/textViewListRavintola"
         android:layout_toRightOf="@id/listIMG"
         android:layout_below="@id/title"
-        android:layout_marginLeft="40dp"
-        android:layout_marginTop="20dp"
-        android:src="@drawable/spongebob"/>
+        android:text="Ravintola: "
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:foregroundGravity="center"
+        android:id="@+id/textViewListTagit"
+        android:layout_toRightOf="@id/listIMG"
+        android:layout_below="@id/textViewListRavintola"
+        android:text="Tagit: "
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"/>
+
 
     <TextView
         android:layout_width="match_parent"

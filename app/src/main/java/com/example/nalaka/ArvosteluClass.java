@@ -1,5 +1,6 @@
 package com.example.nalaka;
 
+import android.graphics.Bitmap;
 import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -8,7 +9,10 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -34,6 +38,7 @@ public class ArvosteluClass implements Serializable {
 
     String url = "https://eighth-anvil-272013.firebaseio.com/Arvostelut.json?print=pretty";
     public static transient JsonObjectRequest jsonObjectRequest;
+    public static transient ImageLoader imageLoader;
 
     public ArvosteluClass(String id) {
         arvosteluId = id;
@@ -128,4 +133,9 @@ public class ArvosteluClass implements Serializable {
         MySingleton.getInstance().addToRequestQueue(jsonObjectRequest);
     }
 
+
+    public void haeKuva()
+    {
+
+    }
 }
