@@ -19,8 +19,7 @@
         android:layout_marginTop="24dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
-        android:onClick="valitseGalleria"
-        android:text="Valitse tiedosto galleriasta"
+
         android:background="@drawable/button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -44,35 +43,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/app_bar" />
 
-
-    <Button
-        android:id="@+id/buttonLisaaKuva"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
-        android:layout_marginLeft="48dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:onClick="otaKuva"
-        android:text="Ota kuva"
-        android:background="@drawable/button"
-        app:layout_constraintEnd_toStartOf="@+id/buttonLisaaVideo"
-        app:layout_constraintStart_toEndOf="@+id/annosKuva"
-        app:layout_constraintTop_toBottomOf="@+id/annoksenNimi" />
-
-    <Button
-        android:id="@+id/buttonLisaaVideo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:onClick="otaVideo"
-        android:text="Ota video"
-        android:background="@drawable/button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/annoksenNimi" />
 
     <EditText
         android:id="@+id/etArvosteluTxt"
