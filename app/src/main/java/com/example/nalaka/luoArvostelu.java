@@ -35,6 +35,10 @@ public class luoArvostelu extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_luo_arvostelu);
 
+        findViewById(R.id.search_img_btn).setOnClickListener(this);
+        findViewById(R.id.logo_btn).setOnClickListener(this);
+        findViewById(R.id.menu_img_btn).setOnClickListener(this);
+
         mDatabase = FirebaseDatabase.getInstance().getReference(); // Realtime tietokanta reference
 
         // Storage tietokanta reference
@@ -47,23 +51,57 @@ public class luoArvostelu extends AppCompatActivity implements View.OnClickListe
          spinnerRavintola = (Spinner) findViewById(R.id.spinnerRavintola);
          spinnerTags = (Spinner) findViewById(R.id.spinnerTags);
 
-        adapterKaupungit = ArrayAdapter.createFromResource(this, R.array.kaupungit, android.R.layout.simple_spinner_item);
-        adapterKaupungit.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerKaupunki.setAdapter(adapterKaupungit);
 
-        adapterRavintolat = ArrayAdapter.createFromResource(this,  R.array.ravintolat, android.R.layout.simple_spinner_item);
-        adapterRavintolat.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerRavintola.setAdapter(adapterRavintolat);
+         spinnerKaupunki.setAdapter(kaupunkiAdapter);
+         spinnerRavintola.setAdapter(ravintolaAdapter);
+         spinnerTags.setAdapter(tagiAdapter);
 
-        adapterTags = ArrayAdapter.createFromResource(this,  R.array.tags, android.R.layout.simple_spinner_item);
-        adapterTags.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerTags.setAdapter(adapterTags);
+        findViewById(R.id.buttonJulkaiseArvostelu).setOnClickListener(this);
+        haeKaupungit();
+        haeTagit();
 
-        findViewById(R.id.button2).setOnClickListener(this);
-        findViewById(R.id.search_img_btn).setOnClickListener(this);
-        findViewById(R.id.logo_btn).setOnClickListener(this);
-        findViewById(R.id.menu_img_btn).setOnClickListener(this);
+        spinnerKaupunki.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+                Object item = parent.getItemAtPosition(pos);
+                if(item.toString() == "Lisää kaupunki"){
+                        popUpKaupunki("Lisää kaupunki");
+                        haeRavintolat(item.toString());
+                }else {
+                    haeRavintolat(item.toString());
+                    spinnerRavintola.setSelection(0);
+                }
+            }
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+        spinnerRavintola.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+                Object item = parent.getItemAtPosition(pos);
+                if(item.toString() == "Lisää ravintola"){
+                    if(spinnerKaupunki.getSelectedItem().toString() != "Valitse" && spinnerKaupunki.getSelectedItem().toString()!="Lisää kaupunki"){
+                        popUpRavintola("Lisää ravintola");
+                    }else{
+                        toast("Valitse kaupunki");
+                    }
 
+                }
+            }
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+        spinnerTags.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+                Object item = parent.getItemAtPosition(pos);
+                if(item.toString() == "Lisää tagi"){
+                    popUpTagi("Lisää tagi");
+                }
+            }
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+    }
+    public void toast(String message){
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
 
