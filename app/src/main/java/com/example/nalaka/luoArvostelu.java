@@ -96,7 +96,6 @@ public class luoArvostelu extends AppCompatActivity implements View.OnClickListe
          btnVideo = (Button) findViewById(R.id.buttonVideo);
          picAnnos = (ImageView) findViewById(R.id.annosKuva);
          vidAnnos = (VideoView) findViewById(R.id.annosVideo);
-         //mdfhlkoämkioådfhmkoidfh
 
          spinnerKaupunki = (Spinner) findViewById(R.id.spinnerKaupunki);
          spinnerRavintola = (Spinner) findViewById(R.id.spinnerRavintola);
