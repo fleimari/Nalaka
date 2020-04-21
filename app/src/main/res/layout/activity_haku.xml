@@ -21,6 +21,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/BtnTaginLisays"
         android:text="Lisää tag"
+        android:background="@drawable/button"
+        style="@style/button_text"
         app:layout_constraintLeft_toRightOf="@id/AutoHaku"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/TextViewOtsikko" />
@@ -39,6 +41,8 @@
         android:layout_marginHorizontal="20dp"
         android:id="@+id/BtnHaku"
         android:text="hae"
+        android:background="@drawable/button"
+        style="@style/button_text"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/Test1" />
