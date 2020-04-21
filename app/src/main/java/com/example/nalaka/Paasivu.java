@@ -13,6 +13,17 @@ import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 public class Paasivu extends AppCompatActivity implements AdapterView.OnItemClickListener, View.OnClickListener {
@@ -20,25 +31,21 @@ public class Paasivu extends AppCompatActivity implements AdapterView.OnItemClic
     ListView list;
     ArrayList<ArvosteluClass> arvostelutLista = new ArrayList<>();
     CustomAdapter adapter;
+    RequestQueue queue;
+    ArrayList<String> idList = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_paasivu);
-
+        queue = Volley.newRequestQueue(this);
+        
         MySingleton.getInstance(this);
         findViewById(R.id.search_img_btn).setOnClickListener(this);
         findViewById(R.id.logo_btn).setOnClickListener(this);
         findViewById(R.id.menu_img_btn).setOnClickListener(this);
 
-        ArvosteluClass arvostelu1 = new ArvosteluClass("-M4TOEDQPKXuYKQmjL7S");
-        ArvosteluClass arvostelu2 = new ArvosteluClass("-M4TPdXyfp3_W_KMlRle");
-        ArvosteluClass arvostelu3 = new ArvosteluClass("-M4TQAt4t18s1SNpN-jC");
-        ArvosteluClass arvostelu4 = new ArvosteluClass("-M4TQZ5XI0ikwHlYR_5y");
-        arvostelutLista.add(arvostelu1);
-        arvostelutLista.add(arvostelu2);
-        arvostelutLista.add(arvostelu3);
-        arvostelutLista.add(arvostelu4);
+        getDatRavintolaJson();
 
         adapter = new CustomAdapter(this, arvostelutLista);
         list = (ListView)findViewById(R.id.listViewPaasivu);
@@ -111,5 +118,34 @@ public class Paasivu extends AppCompatActivity implements AdapterView.OnItemClic
             });
             popup.show();
         }
+    }
+
+    public void getDatRavintolaJson(){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                String url = "https://eighth-anvil-272013.firebaseio.com/Arvostelut.json?print=pretty";
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try{
+                            JSONArray testlist = response.names();
+                            for(int i =0;i<testlist.length();i++){
+                                String id = testlist.getString(i).toString();
+                                ArvosteluClass arvostelu = new ArvosteluClass(id);
+                               arvostelutLista.add(arvostelu);
+                            }
+                        }catch (Exception e){ }
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                    }
+                });
+        queue.add(jsonObjectRequest);
+            }
+        });
     }
 }
