@@ -1,5 +1,6 @@
 package com.example.nalaka;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -22,7 +23,7 @@ import android.widget.PopupMenu;
 import android.widget.Toast;
 
 
-public class Arvostelusivu extends AppCompatActivity implements Vier.OnClickListener {
+public class Arvostelusivu extends AppCompatActivity implements View.OnClickListener {
 
     VideoView videoPlayer;
     ImageView imageViewer;

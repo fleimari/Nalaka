@@ -68,6 +68,10 @@ public class luoArvostelu extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_luo_arvostelu);
 
+        findViewById(R.id.search_img_btn).setOnClickListener(this);
+        findViewById(R.id.logo_btn).setOnClickListener(this);
+        findViewById(R.id.menu_img_btn).setOnClickListener(this);
+
         mDatabase = FirebaseDatabase.getInstance().getReference(); // Realtime tietokanta reference
         kaupunkiList = new ArrayList<String>();
         ravintolaList = new ArrayList<String>();
@@ -152,25 +156,6 @@ public class luoArvostelu extends AppCompatActivity implements View.OnClickListe
     }
     public void toast(String message){
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-
-        adapterKaupungit = ArrayAdapter.createFromResource(this, R.array.kaupungit, android.R.layout.simple_spinner_item);
-        adapterKaupungit.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerKaupunki.setAdapter(adapterKaupungit);
-
-        adapterRavintolat = ArrayAdapter.createFromResource(this,  R.array.ravintolat, android.R.layout.simple_spinner_item);
-        adapterRavintolat.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerRavintola.setAdapter(adapterRavintolat);
-
-        adapterTags = ArrayAdapter.createFromResource(this,  R.array.tags, android.R.layout.simple_spinner_item);
-        adapterTags.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerTags.setAdapter(adapterTags);
-
-        findViewById(R.id.button2).setOnClickListener(this);
-        findViewById(R.id.search_img_btn).setOnClickListener(this);
-        findViewById(R.id.logo_btn).setOnClickListener(this);
-        findViewById(R.id.menu_img_btn).setOnClickListener(this);
-
-
     }
 
     @Override
