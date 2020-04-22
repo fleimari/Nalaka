@@ -61,7 +61,7 @@ public class Arvostelusivu extends AppCompatActivity implements View.OnClickList
 
         textOtsikko.setText(otsikko);
         textArvostelu.setText(arvosteluteksti);
-        arvostelutahdet.setRating(Integer.parseInt(tahdet));
+        arvostelutahdet.setRating(Float.parseFloat(tahdet));
         imageViewer.setVisibility(View.INVISIBLE);
         videoPlayer.setVisibility(View.INVISIBLE);
 
