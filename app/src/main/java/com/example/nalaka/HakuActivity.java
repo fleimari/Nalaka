@@ -30,7 +30,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class HakuActivity extends AppCompatActivity implements View.OnClickListener {
+public class HakuActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
 
     //ArrayList<String> haettavatTagi = new ArrayList<>();
     Spinner spinnerKaupunki, spinnerRavintola, spinnerTags;
@@ -38,7 +38,7 @@ public class HakuActivity extends AppCompatActivity implements View.OnClickListe
     ArrayList<String> ravintolaList;
     ArrayList<String> tagiList;
     ArrayAdapter<String> kaupunkiAdapter,ravintolaAdapter,tagiAdapter;
-    ArrayList<ArvosteluClass> arvostelutHakuun;
+    ArrayList<ArvosteluClass> arvostelutHakuun = new ArrayList<>();
     ListView list;
     CustomAdapter adapter;
 
@@ -209,18 +209,21 @@ public class HakuActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         if (v.getId() == R.id.BtnHaku)
         {
+            arvostelutHakuun.clear();
             getDatRavintolaJson();
+
             Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
                 public void run() {
-
-                    Log.d("Testi3", "run: " + arvostelutHakuun.get(0).getOtsikko());
-
+                    updateList();
                 }
             }, 2000);
-            //adapter = new CustomAdapter(this, arvostelutHakuun);
-            //list = (ListView)findViewById(R.id.listViewHaku);
-            //list.setAdapter(adapter);
+
+            //Log.d("Testi3", "run: " + arvostelutHakuun.get(0).getOtsikko());
+
+            adapter = new CustomAdapter(this, arvostelutHakuun);
+            list = (ListView)findViewById(R.id.listViewHaku);
+            list.setAdapter(adapter);
             //String kaupunki = spinnerKaupunki.getSelectedItem().toString();
             //String ravintola = spinnerRavintola.getSelectedItem().toString();
             //String tag = spinnerTags.getSelectedItem().toString();
@@ -282,7 +285,7 @@ public class HakuActivity extends AppCompatActivity implements View.OnClickListe
                                         ArvosteluClass arvostelu = new ArvosteluClass(id);
                                         arvostelutHakuun.add(arvostelu);
                                     }
-                                }catch (Exception e){ Log.d("Testia3", "run: ei toimi1" );}
+                                }catch (Exception e){ Log.d("Testia3", "run: ei toimi1" + e);}
                             }
                         }, new Response.ErrorListener() {
 
@@ -295,5 +298,17 @@ public class HakuActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
 
+    public void updateList()
+    {
+        adapter.notifyDataSetChanged();
+        list.setOnItemClickListener(this);
+    }
 
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+        Intent intent = new Intent(this, Arvostelusivu.class);
+        intent.putExtra("Arvostelu",arvostelutHakuun.get(position));
+        startActivity(intent);
+    }
 }

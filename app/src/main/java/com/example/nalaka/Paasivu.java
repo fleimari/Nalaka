@@ -134,7 +134,7 @@ public class Paasivu extends AppCompatActivity implements AdapterView.OnItemClic
                             for(int i =0;i<testlist.length();i++){
                                 String id = testlist.getString(i).toString();
                                 ArvosteluClass arvostelu = new ArvosteluClass(id);
-                               arvostelutLista.add(arvostelu);
+                                arvostelutLista.add(arvostelu);
                             }
                         }catch (Exception e){ }
                     }

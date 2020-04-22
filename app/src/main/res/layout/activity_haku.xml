@@ -75,6 +75,7 @@
         android:id="@+id/listViewHaku"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"></ListView>
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constrainedHeight="true"></ListView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
