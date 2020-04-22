@@ -77,7 +77,6 @@ public class luoArvostelu extends AppCompatActivity implements View.OnClickListe
     private Uri kuvaUri, videoUri, tiedostoUri, mediaUri;
     private DatabaseReference mDatabase;
     private FirebaseStorage storage; // kuvan liittämiseen jo valmiiksi reference
-    private StorageTask uploadTask;
     StorageReference storageRef;
     ArrayList<String> kaupunkiList;
     ArrayList<String> ravintolaList;
@@ -189,7 +188,7 @@ public class luoArvostelu extends AppCompatActivity implements View.OnClickListe
                         if(spinnerTags.getSelectedItem().toString() != "Valitse"){
                             if(arvostelu.length() != 0){
 
-                                Fileuploader();
+                                //Fileuploader();
 
                                 //if (kuvaUri / Video == null &&)
 
@@ -312,7 +311,7 @@ public class luoArvostelu extends AppCompatActivity implements View.OnClickListe
 
         //Toinen kuva/video url pitää olla null
         String var = mDatabase.push().getKey();
-        String kuvaUrl = mediaUri.toString();
+        String kuvaUrl = "url: " + mediaUri.toString();
         String peukut = "0";
         String user = "Pekka";
         String videoUrl = "kuvaValmis";
@@ -357,7 +356,12 @@ public class luoArvostelu extends AppCompatActivity implements View.OnClickListe
                         fileReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                             @Override
                             public void onSuccess(Uri uri) {
-                                mediaUri = uri;
+
+
+                                mediaUri = uri;  //Tästä pitäis saada kuvan lopullinen url/uri osoite mutta näyttää et on "null"
+
+
+                                Log.d("MEDIAURI", mediaUri.toString());
                             }
                         });
                         Toast.makeText(luoArvostelu.this, "Median lisäys ONNISTUI!", Toast.LENGTH_LONG).show();
