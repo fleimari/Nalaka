@@ -69,6 +69,7 @@ public class luoArvostelu extends AppCompatActivity implements View.OnClickListe
     public Uri kuvaUri, videoUri;
     private DatabaseReference mDatabase;
     private FirebaseStorage storage; // kuvan liittämiseen jo valmiiksi reference
+    StorageReference storageRef;
     ArrayList<String> kaupunkiList;
     ArrayList<String> ravintolaList;
     ArrayList<String> tagiList;
@@ -105,8 +106,8 @@ public class luoArvostelu extends AppCompatActivity implements View.OnClickListe
         arvostelu = findViewById(R.id.etArvosteluTxt);
         tahdet = findViewById(R.id.ratingBar);
         //Storage tietokanta reference
-        //storage = FirebaseStorage.getInstance();
-        //StorageReference storageRef = storage.getReference();
+        storage = FirebaseStorage.getInstance();
+        storageRef = storage.getReference();
 
          btnKuva = (Button) findViewById(R.id.buttonKuva);
          btnVideo = (Button) findViewById(R.id.buttonVideo);
@@ -318,15 +319,15 @@ public class luoArvostelu extends AppCompatActivity implements View.OnClickListe
     {
 
         //Tästä alla olevasta herjaa. En ummarra. Yritin antaa sille kuvalle uniikin nimen.
-        StorageReference ref = mDatabase.child(System.currentTimeMillis()+" "+getExtension(kuvaUri));
-
+        //StorageReference ref = mDatabase.child(System.currentTimeMillis()+" "+getExtension(kuvaUri));
+        storageRef.child(System.currentTimeMillis()+" "+getExtension(kuvaUri));
 
         // nämä alla on testejä
         //StorageReference ref = storageReference.child("images/"+ UUID.randomUUID().toString());
         //Uri file = Uri.fromFile(new File("path/to/images/rivers.jpg"));
         //StorageReference riversRef = storageRef.child("images/rivers.jpg");
 
-        ref.putFile(kuvaUri)
+        storageRef.putFile(kuvaUri)
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
