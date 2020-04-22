@@ -14,6 +14,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/AutoHaku"
         app:layout_constraintLeft_toLeftOf="parent"
+        android:backgroundTint="@color/colorPrimaryDark"
         app:layout_constraintRight_toLeftOf="@id/BtnTaginLisays"
         app:layout_constraintTop_toBottomOf="@id/TextViewOtsikko" />
     <Button
@@ -21,6 +22,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/BtnTaginLisays"
         android:text="Lisää tag"
+        style="@style/button_text"
+        android:background="@drawable/button"
         app:layout_constraintLeft_toRightOf="@id/AutoHaku"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/TextViewOtsikko" />
@@ -29,6 +32,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/TextViewOtsikko"
         android:text="Hae kaupunki"
+        android:textColor="#000000"
         android:textSize="20dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -39,6 +43,8 @@
         android:layout_marginHorizontal="20dp"
         android:id="@+id/BtnHaku"
         android:text="hae"
+        style="@style/button_text"
+        android:background="@drawable/button"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/Test1" />

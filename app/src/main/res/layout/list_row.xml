@@ -70,6 +70,7 @@
         android:layout_marginBottom="5dp"
         style="?android:attr/ratingBarStyleSmall"
         android:id="@+id/starRating"
+        android:progressTint="@color/colorPrimaryDark"
         android:layout_below="@id/listIMG"/>
 
 

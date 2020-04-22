@@ -18,6 +18,8 @@
         app:layout_constraintBottom_toTopOf="@id/luoArvostelu"
         app:layout_constraintTop_toBottomOf="@id/app_bar"
         android:scrollbars="vertical"
+        android:divider="#FFFFB253"
+        android:dividerHeight="2dp"
         app:layout_constrainedHeight="true"/>
 
     <Button
@@ -25,6 +27,8 @@
         android:layout_width="0dp"
         android:layout_height="60dp"
         android:text="Arvostele annos"
+        style="@style/button_text"
+        android:background="@drawable/button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

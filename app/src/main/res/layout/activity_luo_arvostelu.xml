@@ -19,9 +19,8 @@
         android:layout_marginTop="24dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
-
         android:text="Valitse video"
-
+        android:background="@drawable/button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/annosKuva"
@@ -38,6 +37,8 @@
         android:layout_marginRight="48dp"
         android:gravity="center"
         android:hint="Annoksen nimi"
+        android:textColorHint="@color/colorPrimaryDark"
+        android:backgroundTint="@color/colorPrimaryDark"
         android:singleLine="true"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -54,10 +55,11 @@
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginBottom="32dp"
-        android:background="#EDEDED"
+        android:background="@color/colorPrimary"
         android:editable="false"
         android:gravity="start"
         android:hint="Kirjoita arvostelu"
+        android:textColorHint="@color/colorPrimaryDark"
         android:inputType="textMultiLine"
         app:layout_constraintBottom_toTopOf="@+id/ratingBar"
         app:layout_constraintEnd_toEndOf="parent"
@@ -85,6 +87,7 @@
         android:layout_marginRight="16dp"
         android:layout_marginBottom="16dp"
         android:text="Julkaise arvostelu"
+        android:background="@drawable/button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/ratingBar" />
@@ -123,6 +126,7 @@
         app:layout_constraintEnd_toStartOf="@+id/spinnerRavintola"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
+        android:backgroundTint="@color/colorPrimaryDark"
         app:layout_constraintTop_toBottomOf="@+id/buttonVideo" />
 
     <Spinner
@@ -137,6 +141,7 @@
         app:layout_constraintEnd_toStartOf="@+id/spinnerTags"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/spinnerKaupunki"
+        android:backgroundTint="@color/colorPrimaryDark"
         app:layout_constraintTop_toBottomOf="@+id/buttonVideo" />
 
     <Spinner
@@ -149,6 +154,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/spinnerRavintola"
+        android:backgroundTint="@color/colorPrimaryDark"
         app:layout_constraintTop_toBottomOf="@+id/buttonVideo" />
 
     <Button
@@ -162,6 +168,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:text="Valitse Kuva"
+        android:background="@drawable/button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.676"
         app:layout_constraintStart_toEndOf="@+id/annosKuva"
