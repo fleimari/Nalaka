@@ -66,7 +66,7 @@ public class luoArvostelu extends AppCompatActivity implements View.OnClickListe
     RatingBar tahdet;
     private static final int GALLERY_PICTURE_REQUEST = 1;
     private static final int GALLERY_VIDEO_REQUEST = 2;
-    public Uri kuvaUri, videoUri;
+    private Uri kuvaUri, videoUri, tiedostoUri;
     private DatabaseReference mDatabase;
     private FirebaseStorage storage; // kuvan liittämiseen jo valmiiksi reference
     StorageReference storageRef;
@@ -257,6 +257,7 @@ public class luoArvostelu extends AppCompatActivity implements View.OnClickListe
 
             videoUri = null;
             kuvaUri = kuvaData;
+
         }
         if (requestCode == GALLERY_VIDEO_REQUEST && resultCode == RESULT_OK && data != null) {
             Uri videoData = data.getData();
@@ -289,8 +290,11 @@ public class luoArvostelu extends AppCompatActivity implements View.OnClickListe
 
     public void lisaaArvostelu(String kaupunki,String otsikko, String pisteet, String ravintola, String teksti, String tag){
 
+        //Kuvan tallennus
+        Fileuploader();
+
         String var = mDatabase.push().getKey();
-        String kuvaUrl = "https://img.devrant.com/devrant/rant/r_1973724_9QTSY.jpg";
+        String kuvaUrl = tiedostoUri.toString();
         String peukut = "0";
         String user = "Pekka";
         String videoUrl = "https://www.youtube.com/watch?v=iL7nX9W3aOU";
@@ -307,42 +311,45 @@ public class luoArvostelu extends AppCompatActivity implements View.OnClickListe
         mDatabase.child("Arvostelut").child(var).child("Tags").push().setValue(tag);
     }
 
-    //Tällä uniikki nimi tiedostolle
+
     private String getExtension(Uri uri) {
         ContentResolver cr = getContentResolver();
         MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
         return mimeTypeMap.getExtensionFromMimeType(cr.getType(uri));
     }
 
-    //Kuvan lataus.
+
     private void Fileuploader()
     {
+        if (kuvaUri != null && videoUri == null){
+            tiedostoUri = kuvaUri;
+        }
+        else if (kuvaUri == null && videoUri != null){
+            tiedostoUri = videoUri;
+        }
+        else {
+            Toast.makeText(luoArvostelu.this, "Tiedoston lisäyksessä virhe", Toast.LENGTH_LONG).show();
+        }
 
-        //Tästä alla olevasta herjaa. En ummarra. Yritin antaa sille kuvalle uniikin nimen.
-        //StorageReference ref = mDatabase.child(System.currentTimeMillis()+" "+getExtension(kuvaUri));
-        storageRef.child(System.currentTimeMillis()+" "+getExtension(kuvaUri));
-
-        // nämä alla on testejä
-        //StorageReference ref = storageReference.child("images/"+ UUID.randomUUID().toString());
-        //Uri file = Uri.fromFile(new File("path/to/images/rivers.jpg"));
-        //StorageReference riversRef = storageRef.child("images/rivers.jpg");
-
-        storageRef.putFile(kuvaUri)
+        StorageReference fileReference = storageRef.child(System.currentTimeMillis() + "." + getExtension(tiedostoUri));
+        fileReference.putFile(tiedostoUri)
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        // Get a URL to the uploaded content
-                        // Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                        Toast.makeText(luoArvostelu.this, "Median lisäys ONNISTUI!", Toast.LENGTH_LONG).show();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception exception) {
-                        // Handle unsuccessful uploads
-                        // ...
+                       Toast.makeText(luoArvostelu.this, "VIRHE MEDIANLATAUKSESSA!", Toast.LENGTH_LONG).show();
                     }
                 });
 
+        kuvaUri = null;
+        videoUri = null;
+        vidAnnos.setVisibility(View.INVISIBLE);
+        picAnnos.setVisibility(View.INVISIBLE);
     }
 
 
