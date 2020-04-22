@@ -16,11 +16,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageRequest;
 
-import org.w3c.dom.Text;
-
-import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.List;
 
 public class CustomAdapter extends ArrayAdapter<ArvosteluClass> {
 
@@ -46,7 +42,7 @@ public class CustomAdapter extends ArrayAdapter<ArvosteluClass> {
 
         TextView text = (TextView) vi.findViewById(R.id.arvosteluteksti);
         TextView title = vi.findViewById(R.id.title);
-        TextView ravintola = vi.findViewById(R.id.textViewListRavintola);
+        TextView ravintola = vi.findViewById(R.id.textViewLisKauptJaRavintola);
         TextView tagit = vi.findViewById(R.id.textViewListTagit);
         final ImageView image = (ImageView) vi.findViewById(R.id.listIMG);
         VideoView video = (VideoView) vi.findViewById(R.id.listVideo);
@@ -56,7 +52,10 @@ public class CustomAdapter extends ArrayAdapter<ArvosteluClass> {
 
         text.setText(currentArvostelu.getArvosteluTeksti());
         title.setText(currentArvostelu.getOtsikko());
-        ravintola.setText("Ravintola: " + currentArvostelu.getRavintola());
+        ravintola.setText(currentArvostelu.getRavintola() + " | ");
+        ravintola.append(currentArvostelu.getKaupunki());
+
+
         tagit.setText("Tagit:");
 
         for (int i = 0; i < currentArvostelu.getTagit().size(); i ++)
