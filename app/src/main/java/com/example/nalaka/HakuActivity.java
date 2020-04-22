@@ -41,6 +41,9 @@ public class HakuActivity extends AppCompatActivity implements View.OnClickListe
     ArrayList<ArvosteluClass> arvostelutHakuun = new ArrayList<>();
     ListView list;
     CustomAdapter adapter;
+    boolean onkoTagi = false;
+
+
 
     RequestQueue queue;
 
@@ -85,7 +88,9 @@ public class HakuActivity extends AppCompatActivity implements View.OnClickListe
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
                 Object item = parent.getItemAtPosition(pos);
                 haeRavintolat(item.toString());
+
                 spinnerRavintola.setSelection(0);
+
 
             }
             public void onNothingSelected(AdapterView<?> parent) {
@@ -94,7 +99,6 @@ public class HakuActivity extends AppCompatActivity implements View.OnClickListe
         spinnerRavintola.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
                 Object item = parent.getItemAtPosition(pos);
-                toast("Valitse kaupunki");
             }
             public void onNothingSelected(AdapterView<?> parent) {
             }
@@ -102,6 +106,10 @@ public class HakuActivity extends AppCompatActivity implements View.OnClickListe
         spinnerTags.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
                 Object item = parent.getItemAtPosition(pos);
+
+                spinnerKaupunki.setSelection(0);
+                spinnerRavintola.setSelection(0);
+
             }
             public void onNothingSelected(AdapterView<?> parent) {
             }
@@ -210,16 +218,75 @@ public class HakuActivity extends AppCompatActivity implements View.OnClickListe
         if (v.getId() == R.id.BtnHaku)
         {
             arvostelutHakuun.clear();
-            getDatRavintolaJson();
+            if (!spinnerKaupunki.getSelectedItem().toString().equals("Valitse"))
+            {
+                Log.d("Testia5", "run: " + spinnerRavintola.getSelectedItem().toString() + "  " +spinnerKaupunki.getSelectedItem().toString() );
+                if (spinnerRavintola.getSelectedItem().toString().equals("Valitse")|| spinnerRavintola.getSelectedItem().toString().equals("Kaikki"))
+                {
+                    String kaupunki = spinnerKaupunki.getSelectedItem().toString();
+                    kaupunki = kaupunki.replaceAll(" ", "%20");
+                    String url = "https://eighth-anvil-272013.firebaseio.com/Arvostelut.json?orderBy=%22Kaupunki%22&equalTo=%22" + kaupunki + "%22&print=pretty";
+                    getDatRavintolaJson(url);
+                }
+                else
+                {
+                    String ravintola = spinnerRavintola.getSelectedItem().toString();
+
+                    ravintola = ravintola.replaceAll(" ", "%20");
+                    String url = "https://eighth-anvil-272013.firebaseio.com/Arvostelut.json?orderBy=%22Ravintola%22&equalTo=%22" + ravintola + "%22&print=pretty";
+                    getDatRavintolaJson(url);
+
+                }
+
+            }
+            else if (!spinnerTags.getSelectedItem().toString().equals("Valitse") )
+            {
+                //String tagi = spinnerTags.getSelectedItem().toString();
+                String url = "https://eighth-anvil-272013.firebaseio.com/Arvostelut.json?print=pretty";
+                getDatRavintolaJson(url);
+
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    public void run() {
+
+                        String tagi = spinnerTags.getSelectedItem().toString();
+                        Log.d("Testia5", "run: " + arvostelutHakuun.size());
+                        for (int i = arvostelutHakuun.size()-1; i >= 0 ; i--)
+                        {
+                            for ( int j = 0 ; j < arvostelutHakuun.get(i).getTagit().size() ; j++ )
+                            {
+                                Log.d("Testia5", "run: " + arvostelutHakuun.get(i).getTagit().get(j) + "  " + tagi);
+                                if ( arvostelutHakuun.get(i).getTagit().get(j).equals(tagi) )
+                                {
+
+                                    onkoTagi = true;
+                                }
+                            }
+                            if (onkoTagi == false)
+                            {
+                                arvostelutHakuun.remove(i);
+                            }
+                            else
+                            {
+                                onkoTagi = false;
+                            }
+                        }
+                        Log.d("Testia5", "run: " + arvostelutHakuun.size());
+                    }
+                }, 5000);
+
+
+            }
+
 
             Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
                 public void run() {
+
                     updateList();
                 }
-            }, 2000);
+            }, 1000);
 
-            //Log.d("Testi3", "run: " + arvostelutHakuun.get(0).getOtsikko());
 
             adapter = new CustomAdapter(this, arvostelutHakuun);
             list = (ListView)findViewById(R.id.listViewHaku);
@@ -265,13 +332,13 @@ public class HakuActivity extends AppCompatActivity implements View.OnClickListe
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
-    public void getDatRavintolaJson(){
+    public void getDatRavintolaJson(final String urli){
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
 
-                String kaupunki = spinnerKaupunki.getSelectedItem().toString();
-                String url = "https://eighth-anvil-272013.firebaseio.com/Arvostelut.json?orderBy=%22Kaupunki%22&equalTo=%22" + kaupunki + "%22&print=pretty";
+
+                String url = urli;
                 Log.d("Testia3", "run: " + url);
 
                 JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
