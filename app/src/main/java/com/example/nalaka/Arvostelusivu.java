@@ -30,10 +30,12 @@ public class Arvostelusivu extends AppCompatActivity implements View.OnClickList
     String tahdet;
     String kuvaURL;
     String videoURL;
+    String kaupunki;
+    String ravintola;
 
     VideoView videoPlayer;
     ImageView imageViewer;
-    int i = 0;
+    //int i = 0;
 
 
     @Override
@@ -47,6 +49,8 @@ public class Arvostelusivu extends AppCompatActivity implements View.OnClickList
         TextView textOtsikko = findViewById(R.id.textViewOtsikko);
         TextView textArvostelu = findViewById(R.id.textViewArvostelu);
         RatingBar arvostelutahdet = findViewById(R.id.ratingBar);
+        TextView textRavintola = findViewById(R.id.textViewRavintola);
+        TextView textKaupunki = findViewById(R.id.textViewKaupunki);
         
         findViewById(R.id.search_img_btn).setOnClickListener(this);
         findViewById(R.id.logo_btn).setOnClickListener(this);
@@ -58,12 +62,16 @@ public class Arvostelusivu extends AppCompatActivity implements View.OnClickList
         tahdet = arvostelutiedot.getPisteet();
         kuvaURL = arvostelutiedot.getKuvaUrl();
         videoURL = arvostelutiedot.getViedoUrl();
+        kaupunki = arvostelutiedot.getKaupunki();
+        ravintola = arvostelutiedot.getRavintola();
 
         textOtsikko.setText(otsikko);
         textArvostelu.setText(arvosteluteksti);
         arvostelutahdet.setRating(Float.parseFloat(tahdet));
         imageViewer.setVisibility(View.INVISIBLE);
         videoPlayer.setVisibility(View.INVISIBLE);
+        textRavintola.setText(ravintola);
+        textKaupunki.setText("|    " + kaupunki);
 
         choosePlayer();
 
