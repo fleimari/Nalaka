@@ -5,9 +5,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.InputType;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.MimeTypeMap;
@@ -40,12 +42,16 @@ import android.widget.Toast;
 
 
 import com.google.android.gms.auth.api.signin.internal.Storage;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 
 import org.json.JSONArray;
@@ -68,9 +74,10 @@ public class luoArvostelu extends AppCompatActivity implements View.OnClickListe
     private static final int GALLERY_VIDEO_REQUEST = 2;
     //private int kuvaOrVid;
     private String kuvaValmis, vidValmis;
-    private Uri kuvaUri, videoUri, tiedostoUri;
+    private Uri kuvaUri, videoUri, tiedostoUri, mediaUri;
     private DatabaseReference mDatabase;
     private FirebaseStorage storage; // kuvan liittämiseen jo valmiiksi reference
+    private StorageTask uploadTask;
     StorageReference storageRef;
     ArrayList<String> kaupunkiList;
     ArrayList<String> ravintolaList;
@@ -305,10 +312,10 @@ public class luoArvostelu extends AppCompatActivity implements View.OnClickListe
 
         //Toinen kuva/video url pitää olla null
         String var = mDatabase.push().getKey();
-        String kuvaUrl = "https://firebasestorage.googleapis.com/v0/b/eighth-anvil-272013.appspot.com/o/" +kuvaValmis + "?alt=media&token=92a2c82b-a331-48c2-9cba-a1334d08896a";
+        String kuvaUrl = mediaUri.toString();
         String peukut = "0";
         String user = "Pekka";
-        String videoUrl = "videoUri.toString()";
+        String videoUrl = "kuvaValmis";
 
         mDatabase.child("Arvostelut").child(var).child("Kaupunki").setValue(kaupunki);
         mDatabase.child("Arvostelut").child(var).child("KuvaUrl").setValue(kuvaUrl);
@@ -342,13 +349,17 @@ public class luoArvostelu extends AppCompatActivity implements View.OnClickListe
             Toast.makeText(luoArvostelu.this, "Tiedoston lisäyksessä virhe", Toast.LENGTH_LONG).show();
         }
 
+        final StorageReference fileReference = storageRef.child(System.currentTimeMillis() + "." + getExtension(tiedostoUri));
 
-
-        StorageReference fileReference = storageRef.child(System.currentTimeMillis() + "." + getExtension(tiedostoUri));
-        fileReference.putFile(tiedostoUri)
-                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+        fileReference.putFile(tiedostoUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        fileReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                mediaUri = uri;
+                            }
+                        });
                         Toast.makeText(luoArvostelu.this, "Median lisäys ONNISTUI!", Toast.LENGTH_LONG).show();
                     }
                 })
@@ -359,7 +370,7 @@ public class luoArvostelu extends AppCompatActivity implements View.OnClickListe
                     }
                 });
 
-        kuvaValmis = fileReference.toString();
+        //kuvaValmis = fileReference.getDownloadUrl().toString();
         vidAnnos.setVisibility(View.INVISIBLE);
         picAnnos.setVisibility(View.INVISIBLE);
     }
