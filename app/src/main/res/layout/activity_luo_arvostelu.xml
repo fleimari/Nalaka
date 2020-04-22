@@ -162,7 +162,6 @@
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:text="Valitse Kuva"
-        android:background="@drawable/button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.676"
         app:layout_constraintStart_toEndOf="@+id/annosKuva"
