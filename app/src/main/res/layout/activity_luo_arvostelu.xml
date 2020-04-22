@@ -37,6 +37,8 @@
         android:layout_marginRight="48dp"
         android:gravity="center"
         android:hint="Annoksen nimi"
+        android:textColorHint="@color/colorPrimaryDark"
+        android:backgroundTint="@color/colorPrimaryDark"
         android:singleLine="true"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -123,6 +125,7 @@
         app:layout_constraintEnd_toStartOf="@+id/spinnerRavintola"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
+        android:backgroundTint="@color/colorPrimaryDark"
         app:layout_constraintTop_toBottomOf="@+id/buttonVideo" />
 
     <Spinner
@@ -137,6 +140,7 @@
         app:layout_constraintEnd_toStartOf="@+id/spinnerTags"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/spinnerKaupunki"
+        android:backgroundTint="@color/colorPrimaryDark"
         app:layout_constraintTop_toBottomOf="@+id/buttonVideo" />
 
     <Spinner
@@ -149,6 +153,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/spinnerRavintola"
+        android:backgroundTint="@color/colorPrimaryDark"
         app:layout_constraintTop_toBottomOf="@+id/buttonVideo" />
 
     <Button
