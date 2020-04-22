@@ -24,6 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="paasivu"
+        style="@style/button_text"
         android:background="@drawable/button"
         android:id="@+id/paasivuButton"
         app:layout_constraintTop_toBottomOf="@+id/textView"
