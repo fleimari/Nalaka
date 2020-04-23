@@ -73,8 +73,7 @@ public class CustomAdapter extends ArrayAdapter<ArvosteluClass> {
             {
                 image.setImageResource(R.drawable.pizzaimg);
             }
-
-            Picasso.get().load(currentArvostelu.getViedoUrl()).into(image);
+            image.setImageResource(R.drawable.pizzaimg);
 
         }
         else
