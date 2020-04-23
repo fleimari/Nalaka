@@ -309,7 +309,7 @@ public class HakuActivity extends AppCompatActivity implements View.OnClickListe
                     switch(item.getItemId()) {
                         case R.id.three:
                             Toast.makeText(HakuActivity.this, "Farewell", Toast.LENGTH_SHORT).show();
-                            finish();
+                            finishAffinity();
                             return true;
                         case R.id.two:
                             Toast.makeText(HakuActivity.this, "Nothing here sorry", Toast.LENGTH_LONG).show();

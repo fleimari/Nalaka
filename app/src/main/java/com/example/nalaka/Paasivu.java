@@ -102,7 +102,7 @@ public class Paasivu extends AppCompatActivity implements AdapterView.OnItemClic
                     switch(item.getItemId()) {
                         case R.id.three:
                             Toast.makeText(Paasivu.this, "Farewell", Toast.LENGTH_SHORT).show();
-                            finish();
+                            finishAffinity();
                             return true;
                         case R.id.two:
                             Toast.makeText(Paasivu.this, "Nothing here sorry", Toast.LENGTH_LONG).show();

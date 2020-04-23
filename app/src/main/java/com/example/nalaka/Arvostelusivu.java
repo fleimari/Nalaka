@@ -177,7 +177,7 @@ public class Arvostelusivu extends AppCompatActivity implements View.OnClickList
                     switch(item.getItemId()) {
                         case R.id.three:
                             Toast.makeText(Arvostelusivu.this, "Farewell", Toast.LENGTH_SHORT).show();
-                            finish();
+                            finishAffinity();
                             return true;
                         case R.id.two:
                             Toast.makeText(Arvostelusivu.this, "Nothing here sorry", Toast.LENGTH_LONG).show();
