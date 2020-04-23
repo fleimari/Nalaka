@@ -199,7 +199,12 @@ public class luoArvostelu extends AppCompatActivity implements View.OnClickListe
                                 spinnerKaupunki.setSelection(0);
                                 vidAnnos.setVisibility(View.INVISIBLE);
                                 picAnnos.setVisibility(View.INVISIBLE);
-                                finish();
+
+
+                                Intent valmisIntent = new Intent(this, Paasivu.class);
+                                startActivity(valmisIntent);
+
+                                //finish();
 
 
                                 /*
