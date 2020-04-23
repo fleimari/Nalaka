@@ -109,7 +109,6 @@ public class ArvosteluClass implements Serializable {
 
                             for (int i = 0; i < tagiArr.length(); i++) {
                                 tagit.add(tagi.getString(tagiArr.get(i).toString()));
-                                //Log.d("testiTagit", "onResponse: " + tagi.getString(tagiArr.get(i).toString()));
                             }
 
 

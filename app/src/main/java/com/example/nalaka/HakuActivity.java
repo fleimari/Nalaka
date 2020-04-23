@@ -193,7 +193,6 @@ public class HakuActivity extends AppCompatActivity implements View.OnClickListe
                             @Override
                             public void onResponse(JSONObject response) {
                                 try {
-                                    //JSONObject arr = response.getJSONObject("Tags");
                                     JSONArray testlist = response.names();
                                     for(int i =0;i<testlist.length();i++){
                                         String testi = response.getString(testlist.getString(i).toString());
@@ -241,7 +240,6 @@ public class HakuActivity extends AppCompatActivity implements View.OnClickListe
             }
             else if (!spinnerTags.getSelectedItem().toString().equals("Valitse") )
             {
-                //String tagi = spinnerTags.getSelectedItem().toString();
                 String url = "https://eighth-anvil-272013.firebaseio.com/Arvostelut.json?print=pretty";
                 getDatRavintolaJson(url);
 
@@ -291,11 +289,6 @@ public class HakuActivity extends AppCompatActivity implements View.OnClickListe
             adapter = new CustomAdapter(this, arvostelutHakuun);
             list = (ListView)findViewById(R.id.listViewHaku);
             list.setAdapter(adapter);
-            //String kaupunki = spinnerKaupunki.getSelectedItem().toString();
-            //String ravintola = spinnerRavintola.getSelectedItem().toString();
-            //String tag = spinnerTags.getSelectedItem().toString();
-
-            //String url = "https://eighth-anvil-272013.firebaseio.com/Arvostelut.json?orderBy=\"Kaupunki\"&equalTo=\"" + kaupunki + "\"&print=pretty";
         }
         if (v.getId() == R.id.logo_btn){
             Intent intentPaasivu = new Intent (this, Paasivu.class);

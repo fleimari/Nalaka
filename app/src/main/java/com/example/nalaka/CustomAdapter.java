@@ -72,31 +72,15 @@ public class CustomAdapter extends ArrayAdapter<ArvosteluClass> {
             if (currentArvostelu.getViedoUrl().isEmpty())
             {
                 image.setImageResource(R.drawable.pizzaimg);
-                //image.setVisibility(View.INVISIBLE);
-                //video.setVisibility(View.VISIBLE);
             }
-            image.setImageResource(R.drawable.pizzaimg);
-            //Uri videoUri = Uri.parse(currentArvostelu.getViedoUrl());
-            //video.setVideoURI(videoUri);
+
+            Picasso.get().load(currentArvostelu.getViedoUrl()).into(image);
+
         }
         else
         {
+            image.setImageResource(R.drawable.kebaba);
             Picasso.get().load(currentArvostelu.getKuvaUrl()).into(image);
-            //image.setVisibility(View.VISIBLE);
-            //video.setVisibility(View.INVISIBLE);
-            /*ImageRequest imageRequest = new ImageRequest(currentArvostelu.getKuvaUrl(),
-                    new Response.Listener<Bitmap>() {
-                        @Override
-                        public void onResponse(Bitmap bitmap) {
-                            image.setImageBitmap(bitmap);
-                        }
-                    }, 0, 0, null,
-                    new Response.ErrorListener() {
-                        public void onErrorResponse(VolleyError error) {
-                            image.setImageResource(R.drawable.kebaba);
-                        }
-                    });
-            MySingleton.getInstance().addToRequestQueue(imageRequest);*/
         }
 
         return vi;
