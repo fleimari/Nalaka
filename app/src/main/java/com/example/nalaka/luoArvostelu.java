@@ -186,11 +186,31 @@ public class luoArvostelu extends AppCompatActivity implements View.OnClickListe
                     if(spinnerRavintola.getSelectedItem().toString() != "Valitse"){
                         if(spinnerTags.getSelectedItem().toString() != "Valitse"){
                             if(arvostelu.length() != 0){
+
+                                lisaaArvostelu("kuvaUrli", "videoUrli");
+
+
+                                toast("Arvostelu lisätty");
+                                otsikko.setText("");
+                                arvostelu.setText("");
+                                tahdet.setRating(0);
+                                spinnerTags.setSelection(0);
+                                spinnerRavintola.setSelection(0);
+                                spinnerKaupunki.setSelection(0);
+                                vidAnnos.setVisibility(View.INVISIBLE);
+                                picAnnos.setVisibility(View.INVISIBLE);
+                                finish();
+
+
+                                /*
                                 if(videoUri != null || kuvaUri != null){
                                     Fileuploader();
                                 }else{
                                     Toast.makeText(this, "Kuvaa tai videota ei lisätty", Toast.LENGTH_SHORT).show();
                                 }
+                                 */
+
+
 
                             }else{
                                 Toast.makeText(this, "Arvostelun teksti puuttuu", Toast.LENGTH_SHORT).show();
@@ -341,6 +361,7 @@ public class luoArvostelu extends AppCompatActivity implements View.OnClickListe
                     fileReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
                         public void onSuccess(Uri uri) {
+                            /*
                             mediaUri = uri;
                             if(kuvaOrVid == 1){
                                 String kuvaUrl = mediaUri.toString();
@@ -352,6 +373,9 @@ public class luoArvostelu extends AppCompatActivity implements View.OnClickListe
                                 String videoUrl = mediaUri.toString();
                                 lisaaArvostelu(kuvaUrl,videoUrl);
                             }
+                            */
+
+
                             toast("Arvostelu lisätty");
                             otsikko.setText("");
                             arvostelu.setText("");
