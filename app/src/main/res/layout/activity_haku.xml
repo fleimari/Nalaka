@@ -9,74 +9,119 @@
     <include layout="@layout/custom_toolbar"
         android:id="@+id/app_bar"/>
 
-    <AutoCompleteTextView
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/AutoHaku"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:backgroundTint="@color/colorPrimaryDark"
-        app:layout_constraintRight_toLeftOf="@id/BtnTaginLisays"
-        app:layout_constraintTop_toBottomOf="@id/TextViewOtsikko" />
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/BtnTaginLisays"
-        android:text="Lisää tag"
-        style="@style/button_text"
-        android:background="@drawable/button"
-        app:layout_constraintLeft_toRightOf="@id/AutoHaku"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/TextViewOtsikko" />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/TextViewOtsikko"
-        android:text="Hae kaupunki"
+        android:text="Haku"
         android:textColor="#000000"
         android:textSize="20dp"
+        android:textAllCaps="true"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/app_bar" />
+
+    <TextView
+        android:id="@+id/TextViewHakuKaupunki"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Kaupunki:"
+        android:textColor="#000000"
+        app:layout_constraintEnd_toEndOf="@+id/spinnerKaupunki2"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@id/spinnerKaupunki2"
+        app:layout_constraintTop_toBottomOf="@+id/TextViewOtsikko"/>
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/TextViewHakuRavintola"
+        android:text="Ravintola:"
+        android:textColor="#000000"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        app:layout_constraintEnd_toStartOf="@+id/spinnerTags2"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/spinnerKaupunki2"
+        app:layout_constraintTop_toBottomOf="@+id/TextViewOtsikko"/>
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/TextViewHakuTagit"
+        android:text="Tagit:"
+        android:textColor="#000000"
+        android:layout_marginTop="32dp"
+        app:layout_constraintEnd_toEndOf="@id/spinnerTags2"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/spinnerTags2"
+        app:layout_constraintTop_toBottomOf="@+id/TextViewOtsikko"/>
+
+    <Spinner
+        android:id="@+id/spinnerKaupunki2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        app:layout_constraintEnd_toStartOf="@+id/spinnerRavintola2"
+        android:backgroundTint="@color/colorPrimaryDark"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/TextViewHakuKaupunki" />
+
+    <Spinner
+        android:id="@+id/spinnerRavintola2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        app:layout_constraintEnd_toStartOf="@+id/spinnerTags2"
+        android:backgroundTint="@color/colorPrimaryDark"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/spinnerKaupunki2"
+        app:layout_constraintTop_toBottomOf="@+id/TextViewHakuRavintola" />
+
+    <Spinner
+        android:id="@+id/spinnerTags2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/spinnerRavintola2"
+        android:backgroundTint="@color/colorPrimaryDark"
+        app:layout_constraintTop_toBottomOf="@+id/TextViewHakuTagit" />
+
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
+        android:layout_margin="25dp"
         android:id="@+id/BtnHaku"
         android:text="hae"
         style="@style/button_text"
         android:background="@drawable/button"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/Test1" />
+        app:layout_constraintTop_toBottomOf="@id/spinnerKaupunki2"/>
 
-
-    <RadioGroup
+    <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/Test1"
-        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/BtnHaku"
+        android:id="@+id/listViewHaku"
+        android:divider="#FFFFB253"
+        android:dividerHeight="2dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/AutoHaku" >
-        <RadioButton android:id="@+id/radioKaupunki"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checked="true"
-            android:text="kaupunki"
-            android:onClick="onRadioButtonClicked"/>
-        <RadioButton android:id="@+id/radioRuokalaji"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Ruokalaji"
-            android:onClick="onRadioButtonClicked"/>
-    </RadioGroup>
+        app:layout_constrainedHeight="true"></ListView>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/BtnHaku"
-        android:id="@+id/TextViewTagit"
-        android:text="Tagit: "
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

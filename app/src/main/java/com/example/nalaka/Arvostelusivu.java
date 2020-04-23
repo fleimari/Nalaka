@@ -103,10 +103,10 @@ public class Arvostelusivu extends AppCompatActivity implements View.OnClickList
         }
 
         protected Bitmap doInBackground(String... urls) {
-            String urlImage = urls[0];
+            String picUrl = urls[0];
             Bitmap picImage = null;
             try {
-                InputStream in = new java.net.URL(urlImage).openStream();
+                InputStream in = new java.net.URL(picUrl).openStream();
                 picImage = BitmapFactory.decodeStream(in);
             } catch (Exception e) {
                 Log.e("Error to load image", e.getMessage());
@@ -129,15 +129,16 @@ public class Arvostelusivu extends AppCompatActivity implements View.OnClickList
 
         }
         else if (videoURL != null && !videoURL.isEmpty()) {
-            String videoUrl = videoURL;
-            Uri viUri = Uri.parse(videoUrl);
+            Uri viUri = Uri.parse(videoURL);
             videoPlayer.setVideoURI(viUri);
 
             MediaController mediaController = new MediaController(this);
             videoPlayer.setMediaController(mediaController);
             mediaController.setAnchorView(videoPlayer);
 
+            //videoPlayer.seekTo(100);
             videoPlayer.setVisibility(View.VISIBLE);
+            videoPlayer.start();
         }
 
     }
@@ -176,7 +177,7 @@ public class Arvostelusivu extends AppCompatActivity implements View.OnClickList
                     switch(item.getItemId()) {
                         case R.id.three:
                             Toast.makeText(Arvostelusivu.this, "Farewell", Toast.LENGTH_SHORT).show();
-                            finish();
+                            finishAffinity();
                             return true;
                         case R.id.two:
                             Toast.makeText(Arvostelusivu.this, "Nothing here sorry", Toast.LENGTH_LONG).show();

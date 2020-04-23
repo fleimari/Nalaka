@@ -75,6 +75,7 @@
         android:layout_marginBottom="16dp"
         android:stepSize="1"
         app:layout_constraintBottom_toBottomOf="parent"
+        android:progressTint="@color/colorPrimaryDark"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
