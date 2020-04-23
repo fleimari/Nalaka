@@ -13,10 +13,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".Arvostelusivu" />
-        <activity android:name=".Paasivu" />
+        <activity android:name=".MainActivity" />
         <activity android:name=".HakuActivity" />
         <activity android:name=".luoArvostelu" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".Paasivu">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
