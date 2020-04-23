@@ -5,9 +5,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.InputType;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.MimeTypeMap;
@@ -40,12 +42,16 @@ import android.widget.Toast;
 
 
 import com.google.android.gms.auth.api.signin.internal.Storage;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 
 import org.json.JSONArray;
@@ -66,17 +72,17 @@ public class luoArvostelu extends AppCompatActivity implements View.OnClickListe
     RatingBar tahdet;
     private static final int GALLERY_PICTURE_REQUEST = 1;
     private static final int GALLERY_VIDEO_REQUEST = 2;
-    //private int kuvaOrVid;
-    private String kuvaValmis, vidValmis;
-    private Uri kuvaUri, videoUri, tiedostoUri;
+    private int kuvaOrVid = 0;
+    private Uri kuvaUri, videoUri, tiedostoUri, mediaUri;
     private DatabaseReference mDatabase;
-    private FirebaseStorage storage; // kuvan liittämiseen jo valmiiksi reference
+    private FirebaseStorage storage;
     StorageReference storageRef;
     ArrayList<String> kaupunkiList;
     ArrayList<String> ravintolaList;
     ArrayList<String> tagiList;
     ArrayAdapter<String> kaupunkiAdapter,ravintolaAdapter,tagiAdapter;
     RequestQueue queue;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,7 +113,7 @@ public class luoArvostelu extends AppCompatActivity implements View.OnClickListe
         otsikko = findViewById(R.id.annoksenNimi);
         arvostelu = findViewById(R.id.etArvosteluTxt);
         tahdet = findViewById(R.id.ratingBar);
-        //Storage tietokanta reference
+
         storage = FirebaseStorage.getInstance();
         storageRef = storage.getReference();
 
@@ -152,7 +158,6 @@ public class luoArvostelu extends AppCompatActivity implements View.OnClickListe
                     }else{
                         toast("Valitse kaupunki");
                     }
-
                 }
             }
             public void onNothingSelected(AdapterView<?> parent) {
@@ -181,27 +186,11 @@ public class luoArvostelu extends AppCompatActivity implements View.OnClickListe
                     if(spinnerRavintola.getSelectedItem().toString() != "Valitse"){
                         if(spinnerTags.getSelectedItem().toString() != "Valitse"){
                             if(arvostelu.length() != 0){
-
-                                Fileuploader();
-
-                                //if (kuvaUri / Video == null &&)
-
-                                String kaupunki = spinnerKaupunki.getSelectedItem().toString();
-                                String ravintola = spinnerRavintola.getSelectedItem().toString();
-                                String tag = spinnerTags.getSelectedItem().toString();
-                                String nimi = otsikko.getText().toString();
-                                String pisteet = Float.toString(tahdet.getRating());
-                                String pohdinta = arvostelu.getText().toString();
-                                lisaaArvostelu(kaupunki,nimi,pisteet,ravintola,pohdinta,tag);
-                                Toast.makeText(this, "Arvostelu lisätty", Toast.LENGTH_SHORT).show();
-
-                                otsikko.setText("");
-                                arvostelu.setText("");
-                                tahdet.setRating(0);
-                                spinnerTags.setSelection(0);
-                                spinnerRavintola.setSelection(0);
-                                spinnerKaupunki.setSelection(0);
-
+                                if(videoUri != null || kuvaUri != null){
+                                    Fileuploader();
+                                }else{
+                                    Toast.makeText(this, "Kuvaa tai videota ei lisätty", Toast.LENGTH_SHORT).show();
+                                }
 
                             }else{
                                 Toast.makeText(this, "Arvostelun teksti puuttuu", Toast.LENGTH_SHORT).show();
@@ -253,7 +242,6 @@ public class luoArvostelu extends AppCompatActivity implements View.OnClickListe
             });
             popup.show();
         }
-
     }
 
     @Override
@@ -283,42 +271,43 @@ public class luoArvostelu extends AppCompatActivity implements View.OnClickListe
             kuvaUri = null;
             videoUri = videoData;
         }
-
     }
 
     public void valitseKuva(View view){
+        kuvaOrVid = 1;
         Intent intentKuva = new Intent(Intent.ACTION_GET_CONTENT);
         intentKuva.setType("image/*");
         startActivityForResult(intentKuva.createChooser(intentKuva, "Valitse kuva"), GALLERY_PICTURE_REQUEST);
     }
 
     public void valitseVideo(View view){
+        kuvaOrVid = 2;
         Intent intentVideo = new Intent(Intent.ACTION_GET_CONTENT);
         intentVideo.setType("video/*");
         startActivityForResult(intentVideo.createChooser(intentVideo, "Valitse video"), GALLERY_VIDEO_REQUEST);
     }
 
-    public void lisaaArvostelu(String kaupunki,String otsikko, String pisteet, String ravintola, String teksti, String tag){
+    public void lisaaArvostelu(String kuva, String video){
 
-        //Kuvan tallennus
-        Fileuploader();
-
-        //Toinen kuva/video url pitää olla null
         String var = mDatabase.push().getKey();
-        String kuvaUrl = "https://firebasestorage.googleapis.com/v0/b/eighth-anvil-272013.appspot.com/o/" +kuvaValmis + "?alt=media&token=92a2c82b-a331-48c2-9cba-a1334d08896a";
         String peukut = "0";
         String user = "Pekka";
-        String videoUrl = "videoUri.toString()";
+        String kaupunki = spinnerKaupunki.getSelectedItem().toString();
+        String ravintola = spinnerRavintola.getSelectedItem().toString();
+        String tag = spinnerTags.getSelectedItem().toString();
+        String nimi = otsikko.getText().toString();
+        String pisteet = Float.toString(tahdet.getRating());
+        String teksti = arvostelu.getText().toString();
 
         mDatabase.child("Arvostelut").child(var).child("Kaupunki").setValue(kaupunki);
-        mDatabase.child("Arvostelut").child(var).child("KuvaUrl").setValue(kuvaUrl);
-        mDatabase.child("Arvostelut").child(var).child("Otsikko").setValue(otsikko);
+        mDatabase.child("Arvostelut").child(var).child("KuvaUrl").setValue(kuva);
+        mDatabase.child("Arvostelut").child(var).child("Otsikko").setValue(nimi);
         mDatabase.child("Arvostelut").child(var).child("Peukut").setValue(peukut);
         mDatabase.child("Arvostelut").child(var).child("Pisteet").setValue(pisteet);
         mDatabase.child("Arvostelut").child(var).child("Ravintola").setValue(ravintola);
         mDatabase.child("Arvostelut").child(var).child("Teksti").setValue(teksti);
         mDatabase.child("Arvostelut").child(var).child("User").setValue(user);
-        mDatabase.child("Arvostelut").child(var).child("VideoUrl").setValue(videoUrl);
+        mDatabase.child("Arvostelut").child(var).child("VideoUrl").setValue(video);
         mDatabase.child("Arvostelut").child(var).child("Tags").push().setValue(tag);
     }
 
@@ -332,40 +321,61 @@ public class luoArvostelu extends AppCompatActivity implements View.OnClickListe
 
     private void Fileuploader()
     {
-        if (kuvaUri != null && videoUri == null){
-            tiedostoUri = kuvaUri;
+        try{
+            if (kuvaUri != null && videoUri == null){
+                tiedostoUri = kuvaUri;
+            }
+            else if (kuvaUri == null && videoUri != null){
+                tiedostoUri = videoUri;
+            }
+            else {
+                Toast.makeText(luoArvostelu.this, "Tiedoston lisäyksessä virhe", Toast.LENGTH_LONG).show();
+            }
+
+            final StorageReference fileReference = storageRef.child(System.currentTimeMillis() + "." + getExtension(tiedostoUri));
+            Toast.makeText(luoArvostelu.this, "Mediaa ladataan, odota kunnes lataus on valmis", Toast.LENGTH_LONG).show();
+
+            fileReference.putFile(tiedostoUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    fileReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            mediaUri = uri;
+                            if(kuvaOrVid == 1){
+                                String kuvaUrl = mediaUri.toString();
+                                String videoUrl = "";
+                                lisaaArvostelu(kuvaUrl,videoUrl);
+                            }
+                            if(kuvaOrVid == 2){
+                                String kuvaUrl ="";
+                                String videoUrl = mediaUri.toString();
+                                lisaaArvostelu(kuvaUrl,videoUrl);
+                            }
+                            toast("Arvostelu lisätty");
+                            otsikko.setText("");
+                            arvostelu.setText("");
+                            tahdet.setRating(0);
+                            spinnerTags.setSelection(0);
+                            spinnerRavintola.setSelection(0);
+                            spinnerKaupunki.setSelection(0);
+                            vidAnnos.setVisibility(View.INVISIBLE);
+                            picAnnos.setVisibility(View.INVISIBLE);
+                            finish();
+                        }
+                    });
+                }
+            })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception exception) {
+                            Toast.makeText(luoArvostelu.this, "VIRHE MEDIANLATAUKSESSA!", Toast.LENGTH_LONG).show();
+                        }
+                    });
+
+        }catch (Exception e){
         }
-        else if (kuvaUri == null && videoUri != null){
-            tiedostoUri = videoUri;
-        }
-        else {
-            Toast.makeText(luoArvostelu.this, "Tiedoston lisäyksessä virhe", Toast.LENGTH_LONG).show();
-        }
-
-
-
-        StorageReference fileReference = storageRef.child(System.currentTimeMillis() + "." + getExtension(tiedostoUri));
-        fileReference.putFile(tiedostoUri)
-                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        Toast.makeText(luoArvostelu.this, "Median lisäys ONNISTUI!", Toast.LENGTH_LONG).show();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
-                       Toast.makeText(luoArvostelu.this, "VIRHE MEDIANLATAUKSESSA!", Toast.LENGTH_LONG).show();
-                    }
-                });
-
-        kuvaValmis = fileReference.toString();
-        vidAnnos.setVisibility(View.INVISIBLE);
-        picAnnos.setVisibility(View.INVISIBLE);
     }
-
-
-
 
     public void lisaaTagi(String tagi){
         mDatabase.child("Tags").push().setValue(tagi);
@@ -412,9 +422,7 @@ public class luoArvostelu extends AppCompatActivity implements View.OnClickListe
                 queue.add(jsonObjectRequest);
             }
         });
-
     }
-
     public void haeRavintolat(final String kaupunki){
         runOnUiThread(new Runnable() {
             @Override
