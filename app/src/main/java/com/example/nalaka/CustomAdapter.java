@@ -15,6 +15,7 @@ import android.widget.VideoView;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageRequest;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -80,9 +81,10 @@ public class CustomAdapter extends ArrayAdapter<ArvosteluClass> {
         }
         else
         {
+            Picasso.get().load(currentArvostelu.getKuvaUrl()).into(image);
             //image.setVisibility(View.VISIBLE);
             //video.setVisibility(View.INVISIBLE);
-            ImageRequest imageRequest = new ImageRequest(currentArvostelu.getKuvaUrl(),
+            /*ImageRequest imageRequest = new ImageRequest(currentArvostelu.getKuvaUrl(),
                     new Response.Listener<Bitmap>() {
                         @Override
                         public void onResponse(Bitmap bitmap) {
@@ -94,7 +96,7 @@ public class CustomAdapter extends ArrayAdapter<ArvosteluClass> {
                             image.setImageResource(R.drawable.kebaba);
                         }
                     });
-            MySingleton.getInstance().addToRequestQueue(imageRequest);
+            MySingleton.getInstance().addToRequestQueue(imageRequest);*/
         }
 
         return vi;
