@@ -187,7 +187,7 @@ public class luoArvostelu extends AppCompatActivity implements View.OnClickListe
                         if(spinnerTags.getSelectedItem().toString() != "Valitse"){
                             if(arvostelu.length() != 0){
 
-                                lisaaArvostelu("kuvaUrli", "videoUrli");
+                                lisaaArvostelu("kuvaUrli", "");
 
 
                                 toast("Arvostelu lisätty");
