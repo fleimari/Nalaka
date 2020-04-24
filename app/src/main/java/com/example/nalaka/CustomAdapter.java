@@ -75,13 +75,14 @@ public class CustomAdapter extends ArrayAdapter<ArvosteluClass> {
             {
                 image.setImageResource(R.drawable.pizzaimg);
             }
-            //image.setImageResource(R.drawable.pizzaimg);
+            image.setImageResource(R.drawable.pizzaimg);
 
-            MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+            //Thumbnailin saaminen videoista, hidasti ja kaatoi äppiä:
+            /*MediaMetadataRetriever retriever = new MediaMetadataRetriever();
             retriever.setDataSource(currentArvostelu.getViedoUrl(), new HashMap<String, String>());
 
             Bitmap thumbnail = retriever.getFrameAtTime(1500000, MediaMetadataRetriever.OPTION_CLOSEST_SYNC);
-            image.setImageBitmap(thumbnail);
+            image.setImageBitmap(thumbnail);*/
 
         }
         else
