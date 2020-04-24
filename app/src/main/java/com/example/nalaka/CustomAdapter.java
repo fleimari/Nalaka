@@ -2,7 +2,6 @@ package com.example.nalaka;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.media.MediaMetadataRetriever;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,7 +18,6 @@ import com.android.volley.toolbox.ImageRequest;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class CustomAdapter extends ArrayAdapter<ArvosteluClass> {
 
@@ -75,13 +73,7 @@ public class CustomAdapter extends ArrayAdapter<ArvosteluClass> {
             {
                 image.setImageResource(R.drawable.pizzaimg);
             }
-            //image.setImageResource(R.drawable.pizzaimg);
-
-            MediaMetadataRetriever retriever = new MediaMetadataRetriever();
-            retriever.setDataSource(currentArvostelu.getViedoUrl(), new HashMap<String, String>());
-
-            Bitmap thumbnail = retriever.getFrameAtTime(1500000, MediaMetadataRetriever.OPTION_CLOSEST_SYNC);
-            image.setImageBitmap(thumbnail);
+            image.setImageResource(R.drawable.pizzaimg);
 
         }
         else
